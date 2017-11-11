@@ -1,0 +1,40 @@
+{
+  "name": "resolutionwallet",
+  "description": "living knowledge network resolution wallet",
+  "version": "0.0.1",
+  "author": "James Littlejohn <james@aboynejames.co.uk> (https://twitter.com/aboynejames)",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:LivingKnowledgeNetwork/resolutionwallet.git"
+  },
+  "main": "index.js",
+  "scripts": {
+    "start": "electron .",
+    "postinstall": "electron-rebuild",
+    "test": "npm run test:unit --silent && npm run test:acceptance --silent && jshint || true && npm run test:jshint",
+    "test:unit": "mocha",
+    "test:acceptance": "casperjs test spec/ --baseUrl='http://localhost/lkn/code/resolutionwallet/src/index.html'",
+    "test:jshint": "jshint src/start.js"
+  },
+  "devDependencies": {
+    "casperjs": "^1.1.4",
+    "electron": "^1.4.12",
+    "electron-rebuild": "^1.4.0",
+    "jshint": "^2.9.5",
+    "mocha": "^3.5.0",
+    "phantomjs": "^2.1.7",
+    "uuid": "^3.1.0"
+  },
+  "dependencies": {
+    "pouchdb": "^6.1.0",
+    "pouchdb-adapter-node-websql": "^6.1.0",
+    "socket.io": "1.7.3",
+    "external-ip": "^0.2.4",
+    "kad": "^1.6.1",
+    "kad-traverse": "0.0.4"
+  },
+  "build": {
+    "appId": "com.example.electron-res",
+    "category": "elres.app.category.type"
+  }
+}

@@ -1,0 +1,556 @@
+html {overflow:-moz-scrollbars-vertical !important;}
+
+/* Body */
+	body {
+		background: #F5F4EF; /*url('../images/bg.png')*/
+		color: #000305;
+		font-size: 14px;
+		font-family: 'Trebuchet MS', Trebuchet, 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+		line-height: 1.429;
+		margin: 0;
+		padding: 0;
+		text-align: left;
+		overflow-y: show;
+	}
+
+
+
+/* HTML5 tags */
+header, section, footer,
+aside, nav, article, figure {
+	display: block;
+}
+
+/**
+*
+* Clear any float elements
+*
+*/
+.clear {clear: both;}
+
+/**
+*
+* Welcome message
+*
+*/
+ #welcome {
+	margin: auto;
+	width:100%;
+	text-align:center;
+
+}
+
+ .welcome-message {
+	display:inline-block;
+	width:340px;
+	vertical-align:middle
+ }
+
+ .welcome-image {
+	display:inline-block;
+	width:340px;
+	vertical-align:middle
+ }
+
+ #welcome-message {
+	background: #eee;
+	width:300px;
+	height:200px;
+	line-height:20px;
+	padding:20px;
+}
+
+/**
+*
+* Framework navigation
+*
+*/
+#gaiasoul{
+	font-size:1.4em;
+
+}
+
+img#quoteslogo {
+	height:4%;
+	width:4%;
+
+}
+
+#attention-focus {
+	display:inline-block;
+
+}
+
+#attention-focus input {
+	width:420px;
+	font-size:2em;
+
+}
+
+#sensors {
+	display:inline-block;
+	font-size:1.6em;
+	margin-left:30px;
+
+}
+
+#dmap{
+	display:inline-block;
+	font-size:1.6em;
+	margin-left:30px;
+
+}
+
+#ptop {
+	display:inline-block;
+	font-size:1.6em;
+	margin-left:30px;
+
+}
+
+#identity{
+	display:inline-block;
+	font-size:1.6em;
+	margin-left:30px;
+
+}
+
+#select-gaiasoul-view {
+
+
+}
+
+#select-gaiasoul-view ul li
+{
+	display:inline-block;
+	margin-left:5px;
+	list-style-type:none;
+
+}
+
+#being {
+
+
+}
+
+#ourworld {
+	display:none;
+
+}
+
+#stream {
+	display:none;
+
+
+}
+
+#mindmap {
+	display:none;
+
+
+}
+
+#dmaps-order ul li {
+	margin: 2em;
+	font-size: 1.2em;
+
+
+}
+
+/*
+*  Dmaps  science computation views
+*
+*
+*/
+#dmap-view {
+	display:none;
+	margin:40px;
+
+}
+
+#dmap-dashboard {
+	border: 0px solid black;
+
+
+}
+
+#dmap-dashboard header{
+	border: 0px solid black;
+
+
+}
+
+#dmap-add-new {
+	display:none;
+	border: 1px solid grey;
+
+}
+
+#dmap-template-form {
+	display:none;
+
+}
+
+#roll-to-network {
+ display:none;
+
+}
+
+/**
+*
+* Add new Dmap
+*
+*/
+#dmap_form ul li {
+	list-style-type: none;
+
+}
+
+#dmap-scripting {
+	display:block;
+	border:1px solid blue;
+	margin:2em;
+
+}
+
+#dmap-mapping-notification {
+	display:block;
+	border:1px solid blue;
+	margin:2em;
+
+}
+
+#dmap-mapping-visualization {
+	display:block;
+	border:1px solid blue;
+	margin:2em;
+
+}
+
+/*
+*  dmap lists
+*
+*/
+.dmap-holder {
+	background-color: #ffcc99;
+	margin: 2em;
+
+}
+
+.dmap-history-holder {
+	float: left;
+
+}
+
+.invite-peer-form {
+	float: left;
+
+}
+
+.invite-research-peers {
+	background-color: #e0e0eb;
+	margin: 1em;
+}
+/*
+*  Authorisation views
+*
+*/
+#authorisation {
+	display:none;
+	margin:40px;
+
+}
+
+#signed-in {
+	display:none;
+
+}
+
+#ethereum-api {
+	margin:40px;
+
+
+}
+
+/**
+*
+* Dapps API connetivity status
+*
+*/
+
+#connectivity {
+	margin-top: 4em;
+	text-align:left;
+	display: none;
+
+}
+
+.D-apis {
+	display:inline-block;
+	width:90px;
+	vertical-align:middle;
+}
+
+#science-api
+ {
+	display:block;
+	padding-top:40px;
+	text-align:left;
+	vertical-align:middle;
+}
+
+#science-api header {
+	font-size: 2em;
+	font-weight: bold;
+
+}
+
+#storage-api
+ {
+	display:block;
+	padding-top:40px;
+	text-align:left;
+	vertical-align:middle;
+}
+
+#storage-api header {
+	font-size: 2em;
+	font-weight: bold;
+
+}
+
+#commerce-api
+ {
+	display:block;
+	padding-top:40px;
+	text-align:left;
+	vertical-align:middle;
+}
+
+#commerce-api header {
+	font-size: 2em;
+	font-weight: bold;
+
+}
+
+#money-api
+ {
+	display:block;
+	padding-top:40px;
+	text-align:left;
+	vertical-align:middle;
+}
+
+#money-api header {
+	font-size: 2em;
+	font-weight: bold;
+}
+
+#dapp-api-status ul li {
+	margin-top: 2em;
+	list-style-type: none;
+}
+
+/**
+*
+* status color api
+*
+*/
+#bitcoin-api-status, #Dsensor-api-status, #ethereum-api-status, #maidsafe-api-status, #bigchain-api-status, #ipfs-api-status, #dat-api-status, #jupyter-api-status, #rpython-api-status,  #buysycyle-api-status,  #swarm-api-status, #quotes-api-status,  #ether-api-status, #safecoin-api-status, #datacredits-api-status {
+	display:block;
+	vertical-align:middle;
+	background: grey;
+}
+/*
+*  Sensor and data views
+*
+*
+*/
+.sensor-list-container {
+	width: auto;
+	margin: 1em;
+	background-color: #ffcccc;
+
+}
+
+.check-sensor-holder {
+	display: inline;
+	margin-right: 2em;
+
+}
+
+.sensor-name-holder {
+	display: inline;
+	font-weight: bold;
+
+}
+
+#sensor-data {
+	display:none;
+	margin:40px;
+
+}
+
+/*
+* storage contract info.
+*/
+.storage-content-holder {
+	margin-left: 2em;
+	display: inline-block;
+	min-width: 600px;
+
+}
+.get-history-perm {
+	margin-left: 2em;
+	background-color: #ccffcc;
+	float:left;
+
+}
+
+.set-permission-id {
+	margin-left: 2em;
+	background-color: #b3ccff;
+	float:left;
+
+
+}
+/*
+*  Sensor Data view
+*
+*/
+#sensor-data-dashboard header {
+	margin-top:30px;
+
+
+}
+
+#sensor-data-template-form {
+	display:none;
+
+}
+
+#sensor_form ul li {
+	list-style-type: none;
+
+}
+
+
+/**
+*  file upload section
+*
+**/
+#file-upload-source {
+	display:none;
+
+}
+
+
+#filedrag
+{
+	display: none;
+	font-weight: bold;
+	text-align: center;
+	padding: 1em 0;
+	margin: 1em 0;
+	color: #555;
+	border: 2px dashed #555;
+	border-radius: 7px;
+	cursor: default;
+}
+
+#filedrag.hover
+{
+	color: #f00;
+	border-color: #f00;
+	border-style: solid;
+	box-shadow: inset 0 3px 4px #888;
+}
+
+img
+{
+	max-width: 100%;
+}
+
+pre
+{
+	width: 95%;
+	height: 8em;
+	font-family: monospace;
+	font-size: 0.9em;
+	padding: 1px 2px;
+	margin: 0 0 1em auto;
+	border: 1px inset #666;
+	background-color: #eee;
+	overflow: auto;
+}
+
+#messages
+{
+	padding: 0 10px;
+	margin: 1em 0;
+	border: 1px solid #999;
+}
+
+#progress p
+{
+	display: block;
+	width: 240px;
+	padding: 2px 5px;
+	margin: 2px 0;
+	border: 1px inset #446;
+	border-radius: 5px;
+	background: #eee url("progress.png") 100% 0 repeat-y;
+}
+
+#progress p.success
+{
+	background: #0c0 none 0 0 no-repeat;
+}
+
+#progress p.failed
+{
+	background: #c00 none 0 0 no-repeat;
+}
+/**
+*
+* Peer to Peer view
+*
+*/
+#ptop-view {
+	display:none;
+	margin:40px;
+}
+
+/**
+*
+* Chart Future
+*
+*/
+#canvas-predict-chart {
+	height:400px;
+	width:600px;
+
+}
+
+#canvas-predict-chart-light {
+	height:400px;
+	width:600px;
+
+}
+
+#canvas-predict-chart-temperature {
+	height:400px;
+	width:600px;
+
+}
+
+@media screen and (max-width: 320px) {
+
+
+}
+
+
+@media screen and (min-width: 600px) {
+
+
+}

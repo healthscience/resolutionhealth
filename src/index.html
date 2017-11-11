@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en"  > <!--manifest="resolutionclient.appcache"-->
+<head>
+		<meta charset="utf-8">
+		<title>Resolution Wallet | home</title>
+
+		<link rel="stylesheet" href="css/gaiasoulstyle.css">
+
+		<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+		<script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+		<script type="text/javascript" src="js/pouchdb-utility.js"></script>
+		<script src="socket.io.js"></script>
+		<!-- Insert this line after script imports -->
+		<script>if (window.module) module = window.module;</script>
+
+</head>
+
+<body>
+	<script src="../node_modules/pouchdb/dist/pouchdb.js"></script>
+	<header>
+		<img id="quoteslogo" src="images/lknlogo.png"> Resolution Wallet
+		<div id="attention-focus">
+		</div>
+		<div id="dmap">
+			<a href="#" id="dmap-list">Science</a>
+		</div>
+		<div id="identity">
+			<a href="" id="authorisation-in">Sign-in</a>
+		</div>
+	</header>
+	<section id="authorisation">
+		<form id="siginform" action="#" method="post">
+			<div><label for="name">Username</label>
+						<input type="text" size="16" title="name" class="text ui-widget-content ui-corner-all" id="name">
+			</div>
+			<div><label for="password">Password</label>
+				<input type="password" size="16" title="password" value="" class="text ui-widget-content ui-corner-all" id="password">
+			</div>
+			<button id="network-signin" class="submit" type="submit">Sign-in to network</button>
+		</form>
+
+		<h1>PouchDB &#9829; Electron</h1>
+			We are using
+			<ul>
+				<li>Node.js <script>document.write(process.version)</script></li>
+				<li>Electron <script>document.write(process.versions.electron)</script></li>
+				<li>PouchDB <script>document.write(PouchDB.version)</script></li>
+			</ul>
+
+			<div id="idb"></div>
+			<div id="websql"></div>
+			<div id="leveldb"></div>
+			<div id="sqlitedb"></div>
+
+		<section id="signed-in">
+			<section id="live-status" >
+				<div id="dhtkad-api">
+					<a id="connectDHT" href="">Connect to LKN Protocol</a> <!--<a id="seedDHT" href="" >SEED network</a>-->
+				</div>
+				<div id="ethereum-api">
+					<!--<span id=""><input id="connect-ethpk" class="form-ethpk" type="text" placeholder=""></input></span>
+					<a id="ethereum-set" href="" >Set ethereum public key</a>-->
+				</div>
+			</section>
+			<section id="connectivity">
+				<header class="onlinemode">
+					<nav id="dapp-api-status">
+						<ul>
+							<li>
+								 <img id="image-dshare" src="images/dshare-small.png" /> Decentralized Connectivity
+								 <!--<a href="" id="sshare" data-sshare-status="on" ><img id="image-sshare" src="images/sshare-small.png" /></a>
+								 <a href="" id="help-online" >HELP</a>-->
+							</li>
+						</ul>
+					</nav>
+				</header>
+				<div id="science-api">
+					<header>SCIENCE & COMPUTATION</header>
+					<div class="D-apis" >LKN<div id="Dsensor-api-status">add</div></div>
+					<div class="D-apis" >ethereum <div id="ethereum-api-status">add</div></div>
+					<div class="D-apis" >Jupyter <div id="jupyter-api-status">add</div></div>
+					<div class="D-apis" >R <div id="rpython-api-status">add</div></div>
+				</div>
+				<div id="storage-api">
+					<header>STORAGE</header>
+					<div class="D-apis" >MaidSafe <div id="maidsafe-api-status">add</div></div>
+					<div class="D-apis" >BigchainDB <div id="bigchain-api-status">add</div></div>
+					<div class="D-apis" >IPFS <div id="ipfs-api-status">add</div></div>
+					<div class="D-apis" >DAT <div id="dat-api-status">add</div></div>
+					<div class="D-apis" >Swarm <div id="swarm-api-status">add</div></div>
+
+				</div>
+				<div id="money-api">
+					<header>Currency</header>
+					<div class="D-apis" >Knowledge Tokens <div id="quotes-api-status">add</div></div>
+					<div class="D-apis" >bitcoin <div id="bitcoin-api-status">add</div></div>
+					<div class="D-apis" >ether <div id="ether-api-status">add</div></div>
+					<div class="D-apis" >safecoin <div id="safecoin-api-status">add</div></div>
+					<div class="D-apis" >dataCredits <div id="datacredits-api-status">add</div></div>
+				</div>
+				<div id="dshare-api-add">
+					Making Decentralized Knowledge Happy
+				</div>
+			</section>
+		</section>
+		<section id="lkn-governance">
+				<header>GOVERNANCE</header>
+		</section>
+	</section>
+
+	<section id="dmap-view">
+		<section id="new-lkn-cycle">
+			<div id="lkn-start-cycle">
+				<span id="dht-new-message"><div id="lkn-cycle-message" class="form-dht"></div></span><a id="lkn-start-cycle" href="" >Start</a>
+			</div>
+		</section>
+		<section id="k-in-form">
+		</section>
+		<section id="roll-to-network">
+			<button id="send-to-network" >Roll to Network</button>
+		</section>
+		<div id='knowledge-get' > <a id="get-my-lkn" href="">Get Knowledge</a></div>
+		<div id="coll-input-list" >
+			<header>
+				Coll Knowledge
+			</header>
+			<ul>
+			</ul>
+		</div>
+		<div id="lkn-message-list" >
+			<header>
+				Network Knowledge
+			</header>
+			<div id="network-messages">
+				<ul>
+				</ul>
+			</div>
+		</div>
+	</section> <!-- closes science tab -->
+
+	<script type="text/javascript" src="start.js"></script>
+
+</body>
+</html>
