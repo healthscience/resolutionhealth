@@ -65,7 +65,13 @@ aside, nav, article, figure {
 * Framework navigation
 *
 */
-#gaiasoul{
+#life-health-menu {
+	display:none;
+
+}
+
+
+#life-health-menu{
 	font-size:1.4em;
 
 }
@@ -156,37 +162,46 @@ img#quoteslogo {
 
 
 }
+/*
+*  wearable charting
+*
+*
+*/
+#wearable-chart {
+	display:none;
+
+}
 
 /*
 *  Dmaps  science computation views
 *
 *
 */
-#dmap-view {
+#science-view {
 	display:none;
 	margin:40px;
 
 }
 
-#dmap-dashboard {
+#science-dashboard {
 	border: 0px solid black;
 
 
 }
 
-#dmap-dashboard header{
+#science-dashboard header{
 	border: 0px solid black;
 
 
 }
 
-#dmap-add-new {
+#science-add-new {
 	display:none;
 	border: 1px solid grey;
 
 }
 
-#dmap-template-form {
+#science-template-form {
 	display:none;
 
 }
@@ -263,6 +278,7 @@ img#quoteslogo {
 
 #signed-in {
 	display:none;
+	margin:40px;
 
 }
 
@@ -356,7 +372,7 @@ img#quoteslogo {
 * status color api
 *
 */
-#bitcoin-api-status, #Dsensor-api-status, #ethereum-api-status, #maidsafe-api-status, #bigchain-api-status, #ipfs-api-status, #dat-api-status, #jupyter-api-status, #rpython-api-status,  #buysycyle-api-status,  #swarm-api-status, #quotes-api-status,  #ether-api-status, #safecoin-api-status, #datacredits-api-status {
+#bitcoin-api-status, #Dsensor-api-status, #ethereum-api-status, #maidsafe-api-status, #bigchain-api-status, #ipfs-api-status, #dat-api-status, #truebit-api-status, #webassembly-api-status,  #buysycyle-api-status,  #swarm-api-status, #quotes-api-status,  #ether-api-status, #safecoin-api-status, #datacredits-api-status {
 	display:block;
 	vertical-align:middle;
 	background: grey;

@@ -13,26 +13,48 @@ $(document).ready(function(){
 	var socketpi = io.connect(liveSettings.localIP);
 	var liveStoragescid = '';
 
+	// check public private key is present direct or via guardian
+	// if present, login  (prompt for password if steup)
+	// display live heart data UI
+
 	$("a").click(function(e) {
 		e.preventDefault(e);
 		var idclick = $(this).attr("id");
 console.log(idclick);
-		var cycleid = $("#dht-new-message input#lkn-cycle-message.form-dht").val();
 
 		switch(idclick){
 
 			case "authorisation-in":
 				// sign in authorisation
-				$("#authorisation").show();
-				$("#dmap-view").hide();
-
+				var accountlive = $("#authorisation-in").data("live-account");
+console.log(accountlive);
+				if(accountlive == "on")
+				{
+					$("#signed-in").show();
+					$("#connectivity").show();
+					//$("#authorisation-in").data("live-account", "on");
+					$("#ptop-view").hide();
+					$("#science-view").hide();
+					$("#wearable-chart").hide();
+					$("#science-view").hide();
+				}
+				else
+				{
+					$("#authorisation").show();
+					$("#science-view").hide();
+					$("#ptop-view").hide();
+					$("#wearable-chart").hide();
+					$("#science-view").hide();
+				}
 			break;
 
-			case "dmap-list":
-
-				$("#dmap-view").show();
-				$("#k-in-form").hide();
+			case "science-list":
+				$("#science-view").show();
+				$("#ptop-view").hide();
 				$("#authorisation").hide();
+				$("#signed-in").hide();
+				$("#connectivity").hide();
+				$("#wearable-chart").hide();
 
 				var DmapsLive = '';
 
@@ -54,26 +76,39 @@ console.log(idclick);
 
 			break;
 
-			case "get-my-lkn":
-				//send a message to server to connect to peer to peer Network
-				socketpi.emit('LKN', 'get-my-contributions');
-				$("#ptop-live-list ul").empty();
-
+			case "ptop-list":
+				$("#ptop-view").show();
+				$("#science-view").hide();
+				$("#sensor-data").hide();
+				$("#mindmap").hide();
+				$("#being").hide();
+				$("#ourworld").hide();
+				$("#stream").hide();
+				$("#authorisation").hide();
+				$("#signed-in").hide();
+				$("#connectivity").hide();
+				$("#wearable-chart").hide();
 			break;
 
-			case "get-network-lkn":
-				//send a message to server to connect to peer to peer Network
-				socketpi.emit('LKN', 'get-latest');
-				$("#network-messages").empty();
-
+			case "sensor-list":
+				$("#sensor-data").show();
+				$("#authorisation").hide();
+				$("#ptop-view").hide();
+				$("#signed-in").hide();
+				$("#connectivity").hide();
+				$("#wearable-chart").hide();
+				$("#science-view").hide();
 			break;
 
-			case "lkn-start-cycle":
-
-				socketpi.emit('LKN', 'start-uuid');
-				$("#k-in-form").show();
-				$("#roll-to-network").hide();
-
+			case "kid-heart-view":
+			$("#wearable-chart").show();
+			$("#sensor-data").hide();
+			$("#authorisation").hide();
+			$("#ptop-view").hide();
+			$("#signed-in").hide();
+			$("#connectivity").hide();
+			$("#science-view").hide();
+			getHeartData();
 			break;
 
 		}
@@ -243,20 +278,34 @@ console.log(Cuuid);
 console.log('button clicked');
 		var targetclick = e.target;
 console.log(targetclick);
-		if($(targetclick).attr("id") == "send-to-network")
+		if($(targetclick).attr("id") == "create-new-key")
 		{
-			var messageCyclesend = {};
-			var currentCycle = $("#dht-new-message input#lkn-value-message.form-dht").val();
-			messageCyclesend.type = 'sendm';
-			messageCyclesend.lkn = 'cycleid';
-			messageCyclesend.cycleid = currentCycle;
-			//messageCyclesend.text = 'broadcast to network';
-			socketpi.emit('LKN', messageCyclesend);
-			$("#k-in-form").empty();
-			$("#roll-to-network").hide();
+console.log('private key making');
+			$("#authorisation").hide();
+			$("#authorisation-in").data("live-account", "on");
+			$("#authorisation-in").text('Account LIVE');
+			$("#life-health-menu").show();
 		}
 
 	});
+
+/* Data listeners - getters */
+	function getHeartData() {
+		let token = '';
+		let apiUrl = 'http://188.166.138.93:8882';
+		let endpoint = apiUrl + "/heart24data/" + token + '/james';
+console.log(endpoint);
+		axios.get(endpoint)
+		.then(function (response) {
+console.log('get required heart data');
+console.log(response);
+			let heartData = response.data;
+			let message = "Heart Data Loaded";
+		})
+		.catch(function (error) {
+    console.log(error);
+  });
+}
 
 
 /*  Socket listeners */
@@ -464,57 +513,4 @@ console.log(lknmessageIn.cycleid);
 			}
 	});
 
-	livepouch = new pouchdbSettings();
-	// save in context of tool  template name
 });
-
-(function () {
-
-'use strict';
-
-var $ = document.querySelector.bind(document);
-
-// IndexedDB
-
-var db = new PouchDB('mydb-idb');
-
-db.info().then(function (info) {
-$('#idb').innerHTML = '&#10004; We can use PouchDB with IndexedDB!';
-}).catch(function (err) {
-$('#idb').innerHTML = 'Error for IndexedDB';
-});
-
-// WebSQL
-
-var websqlDB = new PouchDB('mydb-websql', {adapter: 'websql'});
-
-websqlDB.info().then(function (info) {
-$('#websql').innerHTML = '&#10004; We can use PouchDB with WebSQL!';
-}).catch(function (err) {
-$('#websql').innerHTML = 'Error for WebSQL';
-});
-
-// LevelDB
-
-var NodePouchDB = require('pouchdb');
-
-var leveldbDB = new NodePouchDB('mydb-leveldb');
-
-leveldbDB.info().then(function (info) {
-$('#leveldb').innerHTML = '&#10004; We can use PouchDB with LevelDB!';
-}).catch(function (err) {
-$('#leveldb').innerHTML = 'Error for LevelDB';
-});
-
-// node-websql
-
-NodePouchDB.plugin(require('pouchdb-adapter-node-websql'));
-var sqliteDB = new NodePouchDB('mydb-sqlite', {adapter: 'websql'});
-
-sqliteDB.info().then(function (info) {
-$('#sqlitedb').innerHTML = '&#10004; We can use PouchDB with node-websql (SQLite)!';
-}).catch(function (err) {
-$('#sqlitedb').innerHTML = 'Error for node-websql (SQLite)';
-});
-
-})();

@@ -2,141 +2,277 @@
 <html lang="en"  > <!--manifest="resolutionclient.appcache"-->
 <head>
 		<meta charset="utf-8">
-		<title>Resolution Wallet | home</title>
+		<title>Resolution Health | home</title>
 
-		<link rel="stylesheet" href="css/gaiasoulstyle.css">
+		<link rel="stylesheet" href="css/rhstyle.css">
 
 		<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 		<script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
-		<script type="text/javascript" src="js/pouchdb-utility.js"></script>
 		<script src="socket.io.js"></script>
+		<script type="text/javascript" src="js/moment.js"></script>
+		<script type="text/javascript" src="js/Chart.js"></script>
+		<script type="text/javascript" src="js/chartjs-plugin-streaming.js"></script>
+		<script type="text/javascript" src="js/axios.js"></script>
 		<!-- Insert this line after script imports -->
 		<script>if (window.module) module = window.module;</script>
 
 </head>
 
 <body>
-	<script src="../node_modules/pouchdb/dist/pouchdb.js"></script>
 	<header>
-		<img id="quoteslogo" src="images/lknlogo.png"> Resolution Wallet
-		<div id="attention-focus">
-		</div>
-		<div id="dmap">
-			<a href="#" id="dmap-list">Science</a>
-		</div>
-		<div id="identity">
-			<a href="" id="authorisation-in">Sign-in</a>
-		</div>
-	</header>
+			<img id="quoteslogo" src="images/quotes.png"> Resolution Health
+			<div id="sensors">
+				<a href="" id="sensor-list">Data & Sensors</a>
+			</div>
+			<div id="dmap">
+				<a href="#" id="science-list">Science</a>
+			</div>
+			<div id="ptop">
+				<a href="" id="ptop-list">PtoP</a>
+			</div>
+			<div id="identity">
+				<a href="" id="authorisation-in" data-live-account="off" >Create account</a>
+			</div>
+		</header>
+
+		<section id="life-health-menu">
+			<nav id="select-gaiasoul-view">
+				<ul>
+					<li><a href="" id="kid-heart-view" class="notlivecontext" data-mappingview="on" >Heart</a></li>
+					<li><a href="" id="kid-ourworld-view" class="notlivecontext" data-mappingview="off" >Our World</a></li>
+					<li><a href="" id="kid-stream-view" class="livecontext" data-mappingview="off" >Stream</a></li>
+					<li><a href="" id="kid-mindmap-view" class="notlivecontext" data-mappingview="off" >Knowledge Map</a></li>
+				</ul>
+			</nav>
+		</section>
+
 	<section id="authorisation">
 		<form id="siginform" action="#" method="post">
-			<div><label for="name">Username</label>
-						<input type="text" size="16" title="name" class="text ui-widget-content ui-corner-all" id="name">
+			<div><Create private key for healthscience.network
 			</div>
 			<div><label for="password">Password</label>
 				<input type="password" size="16" title="password" value="" class="text ui-widget-content ui-corner-all" id="password">
 			</div>
-			<button id="network-signin" class="submit" type="submit">Sign-in to network</button>
+			<button id="create-new-key" class="submit" type="submit">Create a new account</button>
 		</form>
+	</section>
 
-		<h1>PouchDB &#9829; Electron</h1>
-			We are using
-			<ul>
-				<li>Node.js <script>document.write(process.version)</script></li>
-				<li>Electron <script>document.write(process.versions.electron)</script></li>
-				<li>PouchDB <script>document.write(PouchDB.version)</script></li>
-			</ul>
-
-			<div id="idb"></div>
-			<div id="websql"></div>
-			<div id="leveldb"></div>
-			<div id="sqlitedb"></div>
-
-		<section id="signed-in">
-			<section id="live-status" >
-				<div id="dhtkad-api">
-					<a id="connectDHT" href="">Connect to LKN Protocol</a> <!--<a id="seedDHT" href="" >SEED network</a>-->
-				</div>
-				<div id="ethereum-api">
-					<!--<span id=""><input id="connect-ethpk" class="form-ethpk" type="text" placeholder=""></input></span>
-					<a id="ethereum-set" href="" >Set ethereum public key</a>-->
-				</div>
-			</section>
-			<section id="connectivity">
-				<header class="onlinemode">
-					<nav id="dapp-api-status">
-						<ul>
-							<li>
-								 <img id="image-dshare" src="images/dshare-small.png" /> Decentralized Connectivity
-								 <!--<a href="" id="sshare" data-sshare-status="on" ><img id="image-sshare" src="images/sshare-small.png" /></a>
-								 <a href="" id="help-online" >HELP</a>-->
-							</li>
-						</ul>
-					</nav>
-				</header>
-				<div id="science-api">
-					<header>SCIENCE & COMPUTATION</header>
-					<div class="D-apis" >LKN<div id="Dsensor-api-status">add</div></div>
-					<div class="D-apis" >ethereum <div id="ethereum-api-status">add</div></div>
-					<div class="D-apis" >Jupyter <div id="jupyter-api-status">add</div></div>
-					<div class="D-apis" >R <div id="rpython-api-status">add</div></div>
-				</div>
-				<div id="storage-api">
-					<header>STORAGE</header>
-					<div class="D-apis" >MaidSafe <div id="maidsafe-api-status">add</div></div>
-					<div class="D-apis" >BigchainDB <div id="bigchain-api-status">add</div></div>
-					<div class="D-apis" >IPFS <div id="ipfs-api-status">add</div></div>
-					<div class="D-apis" >DAT <div id="dat-api-status">add</div></div>
-					<div class="D-apis" >Swarm <div id="swarm-api-status">add</div></div>
-
-				</div>
-				<div id="money-api">
-					<header>Currency</header>
-					<div class="D-apis" >Knowledge Tokens <div id="quotes-api-status">add</div></div>
-					<div class="D-apis" >bitcoin <div id="bitcoin-api-status">add</div></div>
-					<div class="D-apis" >ether <div id="ether-api-status">add</div></div>
-					<div class="D-apis" >safecoin <div id="safecoin-api-status">add</div></div>
-					<div class="D-apis" >dataCredits <div id="datacredits-api-status">add</div></div>
-				</div>
-				<div id="dshare-api-add">
-					Making Decentralized Knowledge Happy
-				</div>
-			</section>
+	<section id="signed-in">
+		<section id="live-status" >
+			<div id="dhtkad-api">
+				<a id="connectDHT" href="">Connected to healthscience.network</a> <!--<a id="seedDHT" href="" >SEED network</a>-->
+			</div>
+			<div id="ethereum-api">
+				<!--<span id=""><input id="connect-ethpk" class="form-ethpk" type="text" placeholder=""></input></span>
+				<a id="ethereum-set" href="" >Set ethereum public key</a>-->
+			</div>
 		</section>
-		<section id="lkn-governance">
+
+		<section id="connectivity">
+			<header class="onlinemode">
+				<nav id="dapp-api-status">
+					<ul>
+						<li>
+							 <img id="image-dshare" src="images/dshare-small.png" /> Decentralized Connectivity
+							 <!--<a href="" id="sshare" data-sshare-status="on" ><img id="image-sshare" src="images/sshare-small.png" /></a>
+							 <a href="" id="help-online" >HELP</a>-->
+						</li>
+					</ul>
+				</nav>
+			</header>
+			<div id="science-api">
+				<header>SCIENCE & COMPUTATION</header>
+				<div class="D-apis" >LKN<div id="Dsensor-api-status">add</div></div>
+				<div class="D-apis" >ethereum <div id="ethereum-api-status">add</div></div>
+				<div class="D-apis" >Trubit <div id="truebit-api-status">add</div></div>
+				<div class="D-apis" >Webassembly <div id="webassembly-api-status">add</div></div>
+			</div>
+			<div id="storage-api">
+				<header>STORAGE</header>
+				<div class="D-apis" >MaidSafe <div id="maidsafe-api-status">add</div></div>
+				<div class="D-apis" >BigchainDB <div id="bigchain-api-status">add</div></div>
+				<div class="D-apis" >IPFS <div id="ipfs-api-status">add</div></div>
+				<div class="D-apis" >DAT <div id="dat-api-status">add</div></div>
+				<div class="D-apis" >Swarm <div id="swarm-api-status">add</div></div>
+
+			</div>
+			<div id="money-api">
+				<header>Currency</header>
+				<div class="D-apis" >K-beacons<div id="quotes-api-status">add</div></div>
+				<div class="D-apis" >safecoin <div id="safecoin-api-status">add</div></div>
+			</div>
+		</section>
+
+		<section id="healthscience-governance">
 				<header>GOVERNANCE</header>
 		</section>
 	</section>
 
-	<section id="dmap-view">
-		<section id="new-lkn-cycle">
-			<div id="lkn-start-cycle">
-				<span id="dht-new-message"><div id="lkn-cycle-message" class="form-dht"></div></span><a id="lkn-start-cycle" href="" >Start</a>
+	<section id="science-view">
+		<form id="science-form" action="#" method="post">
+			<div>Contribute a problem, law, theory or computanal model
 			</div>
-		</section>
-		<section id="k-in-form">
-		</section>
-		<section id="roll-to-network">
-			<button id="send-to-network" >Roll to Network</button>
-		</section>
-		<div id='knowledge-get' > <a id="get-my-lkn" href="">Get Knowledge</a></div>
-		<div id="coll-input-list" >
-			<header>
-				Coll Knowledge
-			</header>
-			<ul>
-			</ul>
-		</div>
-		<div id="lkn-message-list" >
-			<header>
-				Network Knowledge
-			</header>
-			<div id="network-messages">
-				<ul>
-				</ul>
+			<div><label for="science-in">science-in</label>
+				<input type="text" size="16" title="science-start-in" value="" class="text ui-widget-content ui-corner-all" id="science-contribute-start">
 			</div>
-		</div>
+			<button id="contribute-new-science" class="submit" type="submit">Gift Science</button>
+		</form>
 	</section> <!-- closes science tab -->
+
+	<section id="ptop-view">
+		<div id="Network Status">
+			Network Status: connect to __ peers.
+		</div>
+	</section>
+	<!-- devices, sensors, data -->
+	<section id="sensor-data">
+		List of devices and data stores
+	</section>
+<!-- charting wearable data -->
+<section id="wearable-chart" >
+	wearable charting
+	<canvas id="canvas"></canvas>
+	</div>
+	<br>
+	<br>
+	<button id="randomizeData">Randomize Data</button>
+	<button id="addDataset">Add Dataset</button>
+	<button id="removeDataset">Remove Dataset</button>
+	<button id="addData">Add Data</button>
+	<script>
+		var chartColors = {
+			red: 'rgb(255, 99, 132)',
+			orange: 'rgb(255, 159, 64)',
+			yellow: 'rgb(255, 205, 86)',
+			green: 'rgb(75, 192, 192)',
+			blue: 'rgb(54, 162, 235)',
+			purple: 'rgb(153, 102, 255)',
+			grey: 'rgb(201, 203, 207)'
+		};
+
+		function newDate(ms) {
+			return moment().add(ms, 'ms');
+		}
+
+		function randomScalingFactor() {
+			return (Math.random() > 0.5 ? 1.0 : -1.0) * Math.round(Math.random() * 100);
+		}
+
+		function onRefresh() {
+			config.data.labels.push(moment());
+			config.data.datasets.forEach(function(dataset) {
+				dataset.data.push(randomScalingFactor());
+			});
+		}
+
+		var color = Chart.helpers.color;
+		var config = {
+			type: 'bar',
+			data: {
+				labels: [],
+				datasets: [{
+					label: 'Dataset (line)',
+					type: 'line',
+					backgroundColor: color(chartColors.red).alpha(0.5).rgbString(),
+									borderColor: chartColors.red,
+					fill: false,
+					cubicInterpolationMode: 'monotone',
+					data: []
+				}, {
+					label: 'Dataset (bars)',
+					backgroundColor: color(chartColors.blue).alpha(0.5).rgbString(),
+					borderColor: chartColors.blue,
+									borderWidth: 1,
+					data: []
+				}]
+			},
+			options: {
+				responsive: true,
+				title: {
+					display: true,
+					text: 'Mixed chart (horizontal scroll) sample'
+				},
+				scales: {
+					xAxes: [{
+						type: 'realtime',
+						display: true,
+						time: {
+							unitStepSize: 1
+						}
+					}],
+					yAxes: [{
+						type: 'linear',
+						display: true,
+						scaleLabel: {
+							display: true,
+							labelString: 'value'
+						}
+					}]
+				},
+				tooltips: {
+					intersect: false
+				},
+				hover: {
+					mode: 'nearest',
+					intersect: false
+				},
+				plugins: {
+					streaming: {
+						duration: 20000,
+						refresh: 1000,
+						delay: 2000,
+						onRefresh: onRefresh
+					}
+				}
+			}
+		};
+
+		window.onload = function() {
+			var ctx = document.getElementById('canvas').getContext('2d');
+			window.myBar = new Chart(ctx, config);
+		};
+
+		document.getElementById('randomizeData').addEventListener('click', function() {
+			config.data.datasets.forEach(function(dataset) {
+				for (var i = 0; i < dataset.data.length; ++i) {
+					dataset.data[i] = randomScalingFactor();
+				}
+			});
+
+			window.myBar.update();
+		});
+
+		var colorNames = Object.keys(chartColors);
+		document.getElementById('addDataset').addEventListener('click', function() {
+			var colorName = colorNames[config.data.datasets.length % colorNames.length];
+			var newColor = chartColors[colorName];
+			var newDataset = {
+				label: 'Dataset ' + config.data.datasets.length,
+				type: 'line',
+				backgroundColor: color(newColor).alpha(0.5).rgbString(),
+				borderColor: newColor,
+				fill: false,
+				cubicInterpolationMode: 'monotone',
+				data: new Array(config.data.labels.length)
+			};
+
+			config.data.datasets.push(newDataset);
+			window.myBar.update();
+		});
+
+		document.getElementById('removeDataset').addEventListener('click', function() {
+			config.data.datasets.pop();
+			window.myBar.update();
+		});
+
+		document.getElementById('addData').addEventListener('click', function() {
+			onRefresh();
+
+			window.myBar.update();
+		});
+	</script>
+
+</section>
 
 	<script type="text/javascript" src="start.js"></script>
 

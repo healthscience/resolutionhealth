@@ -5,12 +5,11 @@
   "author": "James Littlejohn <james@aboynejames.co.uk> (https://twitter.com/aboynejames)",
   "repository": {
     "type": "git",
-    "url": "git@github.com:LivingKnowledgeNetwork/resolutionwallet.git"
+    "url": "https://github.com/healthscience/heartsimulation.git"
   },
   "main": "index.js",
   "scripts": {
     "start": "electron .",
-    "postinstall": "electron-rebuild",
     "test": "npm run test:unit --silent && npm run test:acceptance --silent && jshint || true && npm run test:jshint",
     "test:unit": "mocha",
     "test:acceptance": "casperjs test spec/ --baseUrl='http://localhost/lkn/code/resolutionwallet/src/index.html'",
@@ -18,20 +17,15 @@
   },
   "devDependencies": {
     "casperjs": "^1.1.4",
-    "electron": "^1.4.12",
-    "electron-rebuild": "^1.4.0",
+    "electron": "1.7.10",
     "jshint": "^2.9.5",
     "mocha": "^3.5.0",
     "phantomjs": "^2.1.7",
     "uuid": "^3.1.0"
   },
   "dependencies": {
-    "pouchdb": "^6.1.0",
-    "pouchdb-adapter-node-websql": "^6.1.0",
-    "socket.io": "1.7.3",
-    "external-ip": "^0.2.4",
-    "kad": "^1.6.1",
-    "kad-traverse": "0.0.4"
+    "external-ip": "^1.3.1",
+    "socket.io": "^1.7.3"
   },
   "build": {
     "appId": "com.example.electron-res",
