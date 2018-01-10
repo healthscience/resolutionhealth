@@ -542,6 +542,12 @@ pre
 * Chart Future
 *
 */
+#canvas {
+	height:400px;
+	width:600px;
+
+}
+
 #canvas-predict-chart {
 	height:400px;
 	width:600px;
