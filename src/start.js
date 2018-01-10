@@ -16,6 +16,22 @@ $(document).ready(function(){
 	// check public private key is present direct or via guardian
 	// if present, login  (prompt for password if steup)
 	// display live heart data UI
+	var tempToken = '';
+	fetch('key/temptoken.txt')
+  .then(response => response.text())
+	.then(text => tempToken = text) //console.log(text))
+  .then(function(){
+		$("#signed-in").show();
+		$("#connectivity").show();
+		$("#life-health-menu").show();
+		$("#authorisation-in").data("live-account");
+		$("#authorisation-in").data("live-account", "on");
+		$("#ptop-view").hide();
+		$("#science-view").hide();
+		$("#wearable-chart").hide();
+		$("#science-view").hide();
+	}
+	);
 
 	$("a").click(function(e) {
 		e.preventDefault(e);
@@ -114,163 +130,7 @@ console.log(accountlive);
 		}
 	});
 
-	// new cycle form interaction
-	$("#k-in-form").click(function(e) {
-		e.preventDefault(e);
-		var targetFclick = e.target;
-		var idclickF = $(targetFclick).attr("id");
-console.log(idclickF);
-		var cycleidF = $("#cycleid-uuid").data('cycleid');
-		switch(idclickF){
 
-		case "lkn-validate-datamodel":
-			//send a message to server to connect to peer to peer Network
-			var messageContent = {};
-			var messageNewstring = $("select#lkn-datamodel-type").val();
-console.log(messageNewstring);
-			messageContent.type = 'validate-datamodel';
-			messageContent.lkn = 'datamodel';
-			messageContent.cycleid = cycleidF;
-			messageContent.text = messageNewstring;
-			socketpi.emit('LKN', messageContent);
-
-		break;
-
-		case "lkn-validate-data":
-			//send a message to server to connect to peer to peer Network
-			var messageContentd = {};
-			var messageNewstringd = $("#dht-new-message input#lkn-data-message.form-dht").val();
-			messageContentd.type = 'validate-data';
-			messageContentd.lkn = 'data';
-			messageContentd.cycleid = cycleidF;
-			messageContentd.text = messageNewstringd;
-			socketpi.emit('LKN', messageContentd);
-
-		break;
-
-		case "lkn-validate-science":
-			//send a message to server to connect to peer to peer Network
-			var messageContents = {};
-			var messageNewstrings = $("#dht-new-message input#lkn-science-message.form-dht").val();
-			messageContents.type = 'validate-science';
-			messageContents.lkn = 'science';
-			messageContents.cycleid = cycleidF;
-			messageContents.text = messageNewstrings;
-			socketpi.emit('LKN', messageContents);
-
-		break;
-
-		case "lkn-validate-compute":
-			//send a message to server to connect to peer to peer Network
-			var messageContentc = {};
-			var messageNewstringc = $("select#lkn-compute-type").val();
-			messageContentc.type = 'validate-compute';
-			messageContentc.lkn = 'compute';
-			messageContentc.cycleid = cycleidF;
-			messageContentc.text = messageNewstringc;
-			socketpi.emit('LKN', messageContentc);
-
-		break;
-
-		case "lkn-consensus-value":
-			//send a message to server to connect to peer to peer Network
-			var messageContentv = {};
-			var messageNewstringv = $("#dht-new-message input#lkn-value-message.form-dht").val();
-			messageContentv.type = 'consensus-kt';
-			messageContentv.lkn = 'consensus';
-			messageContentv.cycleid = cycleidF;
-			messageContentv.text = messageNewstringv;
-			socketpi.emit('LKN', messageContentv);
-
-		break;
-
-		}
-
-	});
-
-	// check permission statusCode
-	$("#network-messages").click(function(e) {
-		e.preventDefault(e);
-console.log('networkmessage block');
-		var targetclick = e.target;
-console.log(targetclick);
-console.log($(targetclick).attr("id"));
-console.log($(targetclick).attr("class"));
-
-		$(targetclick).change(function() {
-			// yes or no?
-			var valReview = $("select#lkn-validate-type").val();
-			var innoCID = $(targetclick).parent().data("icycleid");
-
-			if(valReview == 'yes')
-			{
-				// send message to network
-				addInnovation = {};
-				addInnovation.type = 'add-validate-innovation';
-				addInnovation.lkn = 'add-validate-innovation';
-				addInnovation.uuid = innoCID;
-				addInnovation.validate = 'yes';
-				socketpi.emit('LKN', addInnovation);
-			}
-			else
-			{
-				// send message to network
-				addInnovation = {};
-				addInnovation.type = 'add-validate-innovation';
-				addInnovation.lkn = 'add-validate-innovation';
-				addInnovation.uuid = innoCID;
-				addInnovation.validate = 'no';
-				socketpi.emit('LKN', addInnovation);
-			}
-		});
-
-		if($(targetclick).attr("id") == "check-permssion-status")
-		{
-			var smartcontract = $(targetclick).data("scid");
-			var getContractpermission = {};
-			getContractpermission.type = 'get-permission-status';
-			getContractpermission.scid = smartcontract;
-			//getContractpermission.pubethk = peerPublicEthereum;
-			//getContractpermission.plevel = permissionLevelask;
-			socketpi.emit('ethereumAPI', getContractpermission);
-
-		}
-		else if ($(targetclick).attr("id") == "set-permission-invite")
-		{
-			var peerPublicEthereum = $(targetclick).data("pkasker");
-			// update the smart contract for this ID permssion / token access
-			var matchDatamodeltoStorage = $("#match-storage-scid").val();
-			//send a message with smart contract ID to ptop Network
-			var setContractpermission = {};
-			setContractpermission.type = 'set-permission';
-			setContractpermission.scid = matchDatamodeltoStorage;
-			setContractpermission.pubethk = peerPublicEthereum;
-			setContractpermission.plevel = 2;
-
-			socketpi.emit('ethereumAPI', setContractpermission);
-
-		}
-		else if($(targetclick).attr("id") == "urllink")
-		{
-
-			var buildurl = $(targetclick).attr('href');
-console.log(buildurl);
-			window.open(buildurl);
-
-		}
-		else if($(targetclick).attr("id") == "add-value")
-		{
-			var Cuuid = $(targetclick).data('valueinput');
-console.log(Cuuid);
-			var rollConfirm = '';
-			rollConfirm += '	<span id="dht-new-message"><input id="lkn-value-message" class="form-dht" type="text" placeholder=""></input></span><a id="lkn-attribute-value" href="" >Attribute</a>';
-			rollConfirm += '<span id="lkn-consensus-status" ></span>';
-			// need to id to spefic entry
-			$("#express-value-" + Cuuid).append(rollConfirm);
-
-		}
-
-	});
 
 	// button clicks
 	$("button").click(function(e) {
@@ -291,7 +151,8 @@ console.log('private key making');
 
 /* Data listeners - getters */
 	function getHeartData() {
-		let token = '';
+
+		let token = tempToken;
 		let apiUrl = 'http://188.166.138.93:8882';
 		let endpoint = apiUrl + "/heart24data/" + token + '/james';
 console.log(endpoint);
@@ -330,187 +191,137 @@ console.log(response);
 
 	});
 
-	socketpi.on('return-uuid', function (uuidIn) {
-		// set UUID for cycle
-		// clear existing form
-		$("#k-in-form").empty();
+/* charting */
 
-		if(uuidIn.length > 0)
-		{
-			var lkncycle = '';
-			lkncycle += '<div id="lkn-cycle-uuid">';
-			lkncycle += '<div id="cycleid-uuid" data-cycleid=' + uuidIn + '>UUID - ' + uuidIn + '</div>';
-			lkncycle += '	<span id="lkn-datamodel-validate">';
-			lkncycle += '<label for="lkn-datamodel-desc">Pre-defined data models:</label>';
-			lkncycle += '	<select class="select-datamodel" id="lkn-datamodel-type">';
-			lkncycle += '		<option value="none" selected="">Please select</option>';
-			lkncycle += '		<option value="LKN-ethos">LKN-ethos</option>';
-			lkncycle += '		<option value="LKN-paper">LKN-paper</option>';
-			lkncycle += '		<option value="LKN-rw">LKN-rw</option>';
-			lkncycle += '		<option value="LKN-guardiancoll">LKN-guardiancoll</option>';
-			lkncycle += '		<option value="LKN-lh">LKN-living health</option>';
-			lkncycle += '		<option value="LKN--lh-wearable">LH wearables</option>';
-			lkncycle += '	</select>';
-			lkncycle += '<a id="lkn-validate-datamodel" href="" >Datamodel Validate</a>';
-			lkncycle += '<span id="lkn-validate-datamodel-status" ></span>';
-			lkncycle += '</div>';
-			lkncycle += '<div id="lkn-data-validation">';
-			lkncycle += '	<span id="dht-new-message"><input id="lkn-data-message" class="form-dht" type="text" placeholder=""></input></span><a id="lkn-validate-data" href="" >Data Validate</a>';
-			lkncycle += '<span id="lkn-validate-data-status" ></span>';
-			lkncycle += '</div>';
-			lkncycle += '<div id="lkn-science-validation">';
-			lkncycle += '	<span id="dht-new-message"><input id="lkn-science-message" class="form-dht" type="text" placeholder=""></input></span><a id="lkn-validate-science" href="" >Science Validate</a>';
-			lkncycle += '<span id="lkn-validate-science-status" ></span>';
-			lkncycle += '</div>';
-			lkncycle += '<div id="lkn-compute-validation">';
-			lkncycle += '	<span id="dht-new-message">';
-			lkncycle += '<label for="lkn-datamodel-desc">Pre-defined compute types:</label>';
-			lkncycle += '	<select class="select-compute" id="lkn-compute-type">';
-			lkncycle += '		<option value="none" selected="">Please select</option>';
-			lkncycle += '		<option value="local">Local</option>';
-			lkncycle += '		<option value="docker">Docker</option>';
-			lkncycle += '		<option value="mobile">Mobile</option>';
-			lkncycle += '		<option value="cloud">Cloud</option>';
-			lkncycle += '		<option value="thinking">Thinking</option>';
-			lkncycle += '		<option value="truebits">Truebits</option>';
-			lkncycle += '	</select>';
-			lkncycle += '</span><a id="lkn-validate-compute" href="" >Compute Validate</a>';
-			lkncycle += '<span id="lkn-validate-compute-status" ></span>';
-			lkncycle += '</div>';
-			lkncycle += '<div id="lkn-kt-consensus">';
-			lkncycle += '</div>';
+	var chartColors = {
+		red: 'rgb(255, 99, 132)',
+		orange: 'rgb(255, 159, 64)',
+		yellow: 'rgb(255, 205, 86)',
+		green: 'rgb(75, 192, 192)',
+		blue: 'rgb(54, 162, 235)',
+		purple: 'rgb(153, 102, 255)',
+		grey: 'rgb(201, 203, 207)'
+	};
 
-			$("#k-in-form").append(lkncycle);
-		}
+	function newDate(ms) {
+		return moment().add(ms, 'ms');
+	}
 
-  });
+	function randomScalingFactor() {
+		return (Math.random() > 0.5 ? 1.0 : -1.0) * Math.round(Math.random() * 100);
+	}
 
-	socketpi.on('new-lkn-message', function (lknmessageIn) {
+	function onRefresh() {
+		config.data.labels.push(moment());
+		config.data.datasets.forEach(function(dataset) {
+			dataset.data.push(randomScalingFactor());
+		});
+	}
 
-			if(lknmessageIn.lkn == 'cycleid' && lknmessageIn.coll == 'me')
-			{
-				var lknbase = '';
-				lknbase += '<li><div id="lkn-cycle-id-' + lknmessageIn.cycleid + '" data-cycleid=' + lknmessageIn.cycleid + '>';
-				lknbase += '<span id="inn-cycle-id-' + lknmessageIn.cycleid + '">Cycle = 1</span>';
-				lknbase += '<span> ID= ' + lknmessageIn.cycleid + '</span>';
-				lknbase += '<span id="lkn-datamodel-' + lknmessageIn.cycleid + '"> Data Model: </span>';
-				lknbase += '<span id="lkn-data-' + lknmessageIn.cycleid + '"> Data:  </span>';
-				lknbase += '<span id="lkn-science-' + lknmessageIn.cycleid + '"> Science: </span>';
-				lknbase += '<span id="lkn-consensus-' + lknmessageIn.cycleid + '"> <a href="" id="start-consensus" >Start Consensus</a> </span>';
-				lknbase += '<span id="lkn-compute-' + lknmessageIn.cycleid + '"> Compute: </span>';
-				lknbase += '<span id="lkn-value-' + lknmessageIn.cycleid + '"> <a href="" id="add-value" data-valueinput=' + lknmessageIn.cycleid + '>value</a> </span>';
-				lknbase += '<span id="express-value-' + lknmessageIn.cycleid + '"></span>';
-				lknbase += '<span id="lkn-kt-' + lknmessageIn.cycleid + '"> KT== </span>';
-				lknbase += '</div>';
-				lknbase += '<li id="add-inn-holder-' + lknmessageIn.cycleid + '"></li>';
-				lknbase += '</li>';
-
-				$("#coll-input-list ul").append(lknbase);
-
-				// add context info
-				$("#lkn-datamodel-" + lknmessageIn.cycleid).append('<b>' + lknmessageIn.text.datamodel + '</b>');
-				$("#lkn-data-" + lknmessageIn.cycleid).append('<a id="urllink" href="' + lknmessageIn.text.data + '">Source</a>');
-		  	$("#lkn-science-" + lknmessageIn.cycleid).append('<a id="urllink" href="' + lknmessageIn.text.science + '">Repo</a>');
-			  $("#lkn-compute-" + lknmessageIn.cycleid).append('<b>' + lknmessageIn.text.compute + '</b>');
-
-		}
-		else if(lknmessageIn.lkn == 'cycleid' && lknmessageIn.coll == 'network')
-		{
-			var lknbase = '';
-			lknbase += '<li>';
-			lknbase += '<div id="add-validate" data-icycleid=' + lknmessageIn.cycleid + '>';
-			lknbase += '<label for="lkn-validate-innovation">Validate innovation:</label>';
-			lknbase += '	<select class="select-valide" id="lkn-validate-type" >';
-			lknbase += '		<option value="none" selected="">Please validate</option>';
-			lknbase += '		<option value="yes">yes</option>';
-			lknbase += '		<option value="no">no</option>';
-			lknbase += '	</select>';
-			lknbase += '</div>';
-			lknbase += '<span id="lkn-cycle-id" data-cycleid=' + lknmessageIn.cycleid + '>';
-			lknbase += '<span>Cycle = 1</span>';
-			lknbase += '<span> ID= ' + lknmessageIn.cycleid + '</span>';
-			lknbase += '<span id="lkn-datamodel-' + lknmessageIn.cycleid + '"> Data Model: </span>';
-			lknbase += '<span id="lkn-data-' + lknmessageIn.cycleid + '"> Data:  </span>';
-			lknbase += '<span id="lkn-science-' + lknmessageIn.cycleid + '"> Science: </span>';
-			lknbase += '<span id="lkn-consensus-' + lknmessageIn.cycleid + '"> <a href="" id="start-consensus" >Start Consensus</a> </span>';
-			lknbase += '<span id="lkn-compute-' + lknmessageIn.cycleid + '"> Compute: </span>';
-			lknbase += '<span id="lkn-value-' + lknmessageIn.cycleid + '"> <a href="" id="add-value" data-valueinput=' + lknmessageIn.cycleid + '>value</a> </span>';
-			lknbase += '<span id="express-value-' + lknmessageIn.cycleid + '"></span>';
-			lknbase += '<span id="lkn-kt-' + lknmessageIn.cycleid + '"> KT== </span>';
-			lknbase += '</div></li>';
-
-			$("#network-messages ul").append(lknbase);
-
-			// add context info
-			$("#lkn-datamodel-" + lknmessageIn.cycleid).append('<b>' + lknmessageIn.text.datamodel + '</b>');
-			$("#lkn-data-" + lknmessageIn.cycleid).append('<a id="urllink" href="' + lknmessageIn.text.data + '">Source</a>');
-	  	$("#lkn-science-" + lknmessageIn.cycleid).append('<a id="urllink" href="' + lknmessageIn.text.science + '">Repo</a>');
-		  $("#lkn-compute-" + lknmessageIn.cycleid).append('<b>' + lknmessageIn.text.compute + '</b>');
-
-		}
-		else if(lknmessageIn.lkn == 'add-validate-innovation' && lknmessageIn.coll == 'add-innovation')
-		{
-console.log('new innovation to add');
-console.log(lknmessageIn.cycleid);
-			// need to append to an existing innovation
-			$("#inn-cycle-id-" + lknmessageIn.cycleid).append('<b> cycle 2</b>');
-			$("#add-inn-holder-" + lknmessageIn.cycleid).append('<b> Next innovation</b>');
-		}
-
-	});
-
-	socketpi.on('validate-datamodel', function (validateMessage) {
-
-			if(validateMessage == 'passed')
-			{
-				$("#lkn-validate-datamodel-status").append('<b>' + validateMessage + '</b>');
-			}
-	});
-
-	socketpi.on('validate-data', function (validateMessage) {
-
-			if(validateMessage == 'passed')
-			{
-				$("#lkn-validate-data-status").append('<b>' + validateMessage + '</b>');
-			}
-	});
-
-		socketpi.on('validate-science', function (validateMessage) {
-
-				if(validateMessage == 'passed')
-				{
-					$("#lkn-validate-science-status").append('<b>' + validateMessage + '</b>');
+	var color = Chart.helpers.color;
+	var config = {
+		type: 'bar',
+		data: {
+			labels: [],
+			datasets: [{
+				label: 'Dataset (line)',
+				type: 'line',
+				backgroundColor: color(chartColors.red).alpha(0.5).rgbString(),
+								borderColor: chartColors.red,
+				fill: false,
+				cubicInterpolationMode: 'monotone',
+				data: []
+			}, {
+				label: 'Dataset (bars)',
+				backgroundColor: color(chartColors.blue).alpha(0.5).rgbString(),
+				borderColor: chartColors.blue,
+								borderWidth: 1,
+				data: []
+			}]
+		},
+		options: {
+			responsive: true,
+			title: {
+				display: true,
+				text: 'Mixed chart (horizontal scroll) sample'
+			},
+			scales: {
+				xAxes: [{
+					type: 'realtime',
+					display: true,
+					time: {
+						unitStepSize: 1
+					}
+				}],
+				yAxes: [{
+					type: 'linear',
+					display: true,
+					scaleLabel: {
+						display: true,
+						labelString: 'value'
+					}
+				}]
+			},
+			tooltips: {
+				intersect: false
+			},
+			hover: {
+				mode: 'nearest',
+				intersect: false
+			},
+			plugins: {
+				streaming: {
+					duration: 20000,
+					refresh: 1000,
+					delay: 2000,
+					onRefresh: onRefresh
 				}
+			}
+		}
+	};
+
+	window.onload = function() {
+		var ctx = document.getElementById('canvas').getContext('2d');
+		window.myBar = new Chart(ctx, config);
+	};
+
+	document.getElementById('randomizeData').addEventListener('click', function() {
+		config.data.datasets.forEach(function(dataset) {
+			for (var i = 0; i < dataset.data.length; ++i) {
+				dataset.data[i] = randomScalingFactor();
+			}
 		});
 
-	socketpi.on('validate-compute', function (validateMessage) {
-
-			if(validateMessage == 'passed')
-			{
-				$("#lkn-validate-compute-status").append('<b>' + validateMessage + '</b>');
-			}
+		window.myBar.update();
 	});
 
-	socketpi.on('validation-complete', function (validateMessage) {
+	var colorNames = Object.keys(chartColors);
+	document.getElementById('addDataset').addEventListener('click', function() {
+		var colorName = colorNames[config.data.datasets.length % colorNames.length];
+		var newColor = chartColors[colorName];
+		var newDataset = {
+			label: 'Dataset ' + config.data.datasets.length,
+			type: 'line',
+			backgroundColor: color(newColor).alpha(0.5).rgbString(),
+			borderColor: newColor,
+			fill: false,
+			cubicInterpolationMode: 'monotone',
+			data: new Array(config.data.labels.length)
+		};
 
-			$("#roll-to-network").show();
+		config.data.datasets.push(newDataset);
+		window.myBar.update();
 	});
 
-	socketpi.on('network-informed', function (validateMessage) {
-
-			if(validateMessage == 'sent')
-			{
-
-
-			}
+	document.getElementById('removeDataset').addEventListener('click', function() {
+		config.data.datasets.pop();
+		window.myBar.update();
 	});
 
-	socketpi.on('consensus-kt', function (validateMessage) {
+	document.getElementById('addData').addEventListener('click', function() {
+		onRefresh();
 
-			if(validateMessage == 'none')
-			{
-				$("#lkn-consensus-status").append('<b>' + validateMessage + '</b>');
-			}
+		window.myBar.update();
 	});
 
 });
