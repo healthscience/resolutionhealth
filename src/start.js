@@ -13,6 +13,9 @@ $(document).ready(function(){
 	var socketpi = io.connect(liveSettings.localIP);
 	var liveStoragescid = '';
 
+	var heartApp = {};
+	var heart = {};
+	var predicted = {};
 	// check public private key is present direct or via guardian
 	// if present, login  (prompt for password if steup)
 	// display live heart data UI
@@ -47,12 +50,13 @@ console.log(data);
 						 $("#signed-in").show();
 						 $("#connectivity").show();
 						 $("#life-health-menu").show();
-						 $("#authorisation-in").data("live-account");
-						 $("#authorisation-in").data("live-account", "on");
 						 $("#ptop-view").hide();
 						 $("#science-view").hide();
 						 $("#wearable-chart").hide();
 						 $("#science-view").hide();
+						 $("#authorisation-in").text("live-account");
+						 $("#authorisation-in").data("live-account", "on");
+						 $("#simulation-heart").hide();
 				 });
 		 }
 }
@@ -65,12 +69,13 @@ else {
 		$("#signed-in").show();
 		$("#connectivity").show();
 		$("#life-health-menu").show();
-		$("#authorisation-in").data("live-account");
+  	$("#authorisation-in").text("live-account");
 		$("#authorisation-in").data("live-account", "on");
 		$("#ptop-view").hide();
 		$("#science-view").hide();
 		$("#wearable-chart").hide();
 		$("#science-view").hide();
+		$("#simulation-heart").hide();
 	});
 }
 
@@ -78,7 +83,6 @@ else {
 		e.preventDefault(e);
 		var idclick = $(this).attr("id");
 console.log(idclick);
-
 		switch(idclick){
 
 			case "authorisation-in":
@@ -90,10 +94,12 @@ console.log(accountlive);
 					$("#signed-in").show();
 					$("#connectivity").show();
 					//$("#authorisation-in").data("live-account", "on");
+					$("#healthscience-governance").hide();
 					$("#ptop-view").hide();
 					$("#science-view").hide();
 					$("#wearable-chart").hide();
 					$("#science-view").hide();
+					$("#simulation-heart").hide();
 				}
 				else
 				{
@@ -102,16 +108,42 @@ console.log(accountlive);
 					$("#ptop-view").hide();
 					$("#wearable-chart").hide();
 					$("#science-view").hide();
+					$("#simulation-heart").hide();
 				}
+			break;
+
+			case "governance-api":
+				$("#healthscience-governance").show();
+				//$("#authorisation").hide();
+				//$("#signed-in").hide();
+				$("#science-view").hide();
+				$("#ptop-view").hide();
+				$("#connectivity").hide();
+				$("#wearable-chart").hide();
+				$("#simulation-heart").hide();
+			break;
+
+			case "connectDHT":
+				$("#connectivity").show();
+				$("#healthscience-governance").hide();
+				//$("#authorisation").hide();
+				//$("#signed-in").hide();
+				$("#science-view").hide();
+				$("#ptop-view").hide();
+				$("#connectivity").hide();
+				$("#wearable-chart").hide();
+				$("#simulation-heart").hide();
 			break;
 
 			case "science-list":
 				$("#science-view").show();
+				$("#sensor-data").hide();
 				$("#ptop-view").hide();
 				$("#authorisation").hide();
 				$("#signed-in").hide();
 				$("#connectivity").hide();
 				$("#wearable-chart").hide();
+				$("#simulation-heart").hide();
 
 				var DmapsLive = '';
 
@@ -145,6 +177,7 @@ console.log(accountlive);
 				$("#signed-in").hide();
 				$("#connectivity").hide();
 				$("#wearable-chart").hide();
+				$("#simulation-heart").hide();
 			break;
 
 			case "sensor-list":
@@ -155,6 +188,7 @@ console.log(accountlive);
 				$("#connectivity").hide();
 				$("#wearable-chart").hide();
 				$("#science-view").hide();
+				$("#simulation-heart").hide();
 			break;
 
 			case "kid-heart-view":
@@ -165,7 +199,22 @@ console.log(accountlive);
 			$("#signed-in").hide();
 			$("#connectivity").hide();
 			$("#science-view").hide();
+			$("#simulation-heart").hide();
 			getHeartData();
+			getHeartData2();
+			getHeartData3();
+			break;
+
+			case "kid-simulation-view":
+			$("#simulation-heart").show();
+			$("#wearable-chart").hide();
+			$("#sensor-data").hide();
+			$("#authorisation").hide();
+			$("#ptop-view").hide();
+			$("#signed-in").hide();
+			$("#connectivity").hide();
+			$("#science-view").hide();
+			heartsimulation();
 			break;
 
 		}
@@ -197,14 +246,39 @@ console.log('private key making');
 		let apiUrl = 'http://188.166.138.93:8882';
 		let endpoint = apiUrl + "/heart24data/" + token + '/james';
 console.log(endpoint);
-		axios.get(endpoint)
+  //MOCK RETURNED DATA
+	var hrCouplearr = [];
+	var heartData = [];
+	//heartDatao = {};
+	//heartDatao.daystart = new Date();
+	//heartDatao.hravg = 64;
+	//heartData.push(heartDatao);
+	//heartData.forEach(function(couple) {
+	//	var hrCouple = {};
+	//	hrCouple.x = couple.daystart;
+	//	hrCouple.y = couple.hravg;
+	//	hrCouplearr.push(hrCouple);
+//console.log(hrCouplearr);
+//	});
+//console.log(heartData);
+
+	axios.get(endpoint)
 		.then(function (response) {
 console.log('get required heart data');
-console.log(response);
+//console.log(response.data);
 			let heartData = response.data;
 			let message = "Heart Data Loaded";
-
-			/* charting */
+			// create an array in chart standard ie. [x, y]
+			let hrCouplearr = [];
+			heartData.forEach(function(couple) {
+//console.log(couple);
+				var hrCouple = {};
+				hrCouple.x = couple.daystart;
+				hrCouple.y = couple.hravg;
+				hrCouplearr.push(hrCouple);
+			});
+//console.log(hrCouplearr);
+				/* charting */
 
 				var chartColors = {
 					red: 'rgb(255, 99, 132)',
@@ -225,9 +299,24 @@ console.log(response);
 				}
 
 				function onRefresh() {
-					config.data.labels.push(moment());
-					config.data.datasets.forEach(function(dataset) {
-						dataset.data.push(randomScalingFactor());
+//console.log(config.data.datasets);
+					let localcpd = hrCouplearr;
+				  let cpd = hrCouplearr.shift();
+console.log(cpd.x);
+					let rdate = cpd.x;
+					let jsdate =  new Date(rdate);
+console.log(jsdate);
+console.log((jsdate instanceof Date))
+					config.data.datasets.forEach(function(dataxy) {
+						let wholeb = Math.round(cpd.y);
+						let momentd = {};
+						momentd = moment(jsdate);//"12-25-1995", "MM-DD-YYYY");//new Date();//moment(cpd.x);
+//console.log(momentd);
+						dataxy.data.push({
+							x:  new Date(),
+							y: wholeb
+						});
+console.log(dataxy.data);
 					});
 				}
 
@@ -236,7 +325,7 @@ console.log(response);
 					type: 'bar',
 					data: {
 						labels: [],
-						datasets: [{
+						datasets: [/*{
 							label: 'Dataset (line)',
 							type: 'line',
 							backgroundColor: color(chartColors.red).alpha(0.5).rgbString(),
@@ -244,7 +333,7 @@ console.log(response);
 							fill: false,
 							cubicInterpolationMode: 'monotone',
 							data: []
-						}, {
+						}, */{
 							label: 'Dataset (bars)',
 							backgroundColor: color(chartColors.blue).alpha(0.5).rgbString(),
 							borderColor: chartColors.blue,
@@ -256,7 +345,7 @@ console.log(response);
 						responsive: true,
 						title: {
 							display: true,
-							text: 'Mixed chart (horizontal scroll) sample'
+							text: 'Heart Rate Beats per minute'
 						},
 						scales: {
 							xAxes: [{
@@ -293,62 +382,288 @@ console.log(response);
 					}
 				};
 
-				//window.onload = function() {
-		console.log('canvas charting starting');
-					var ctx = document.getElementById('canvas').getContext('2d');
-					window.myBar = new Chart(ctx, config);
-				//};
-
-				document.getElementById('randomizeData').addEventListener('click', function() {
-					config.data.datasets.forEach(function(dataset) {
-						for (var i = 0; i < dataset.data.length; ++i) {
-							dataset.data[i] = randomScalingFactor();
-						}
-					});
-
-					window.myBar.update();
-				});
-
-				var colorNames = Object.keys(chartColors);
-				document.getElementById('addDataset').addEventListener('click', function() {
-					var colorName = colorNames[config.data.datasets.length % colorNames.length];
-					var newColor = chartColors[colorName];
-					var newDataset = {
-						label: 'Dataset ' + config.data.datasets.length,
-						type: 'line',
-						backgroundColor: color(newColor).alpha(0.5).rgbString(),
-						borderColor: newColor,
-						fill: false,
-						cubicInterpolationMode: 'monotone',
-						data: new Array(config.data.labels.length)
-					};
-
-					config.data.datasets.push(newDataset);
-					window.myBar.update();
-				});
-
-				document.getElementById('removeDataset').addEventListener('click', function() {
-					config.data.datasets.pop();
-					window.myBar.update();
-				});
-
-				document.getElementById('addData').addEventListener('click', function() {
-					onRefresh();
-
-					window.myBar.update();
-				});
-
-
-
-
-
-
+console.log('canvas charting starting');
+			var ctx = document.getElementById('canvas').getContext('2d');
+				window.myBar = new Chart(ctx, config);
 		})
 		.catch(function (error) {
-    console.log(error);
+console.log(error);
   	});
-	}
+	};
 
+	/* Data listeners - getters */
+		function getHeartData2() {
+
+			let token = tempToken;
+			let apiUrl = 'http://188.166.138.93:8882';
+			let endpoint = apiUrl + "/heart24data/" + token + '/james';
+console.log(endpoint);
+	  //MOCK RETURNED DATA
+		var hrCouplearr = [];
+		var heartData = [];
+
+		axios.get(endpoint)
+			.then(function (response) {
+	console.log('get required heart data');
+	//console.log(response.data);
+				let heartData = response.data;
+				let message = "Heart Data Loaded";
+				// create an array in chart standard ie. [x, y]
+				let hrCouplearr = [];
+				heartData.forEach(function(couple) {
+	//console.log(couple);
+					var hrCouple = {};
+					hrCouple.x = couple.daystart;
+					hrCouple.y = couple.hravg;
+					hrCouplearr.push(hrCouple);
+				});
+	//console.log(hrCouplearr);
+					/* charting */
+
+					var chartColors = {
+						red: 'rgb(255, 99, 132)',
+						orange: 'rgb(255, 159, 64)',
+						yellow: 'rgb(255, 205, 86)',
+						green: 'rgb(75, 192, 192)',
+						blue: 'rgb(54, 162, 235)',
+						purple: 'rgb(153, 102, 255)',
+						grey: 'rgb(201, 203, 207)'
+					};
+
+					function newDate(ms) {
+						return moment().add(ms, 'ms');
+					}
+
+					function randomScalingFactor() {
+						return (Math.random() > 0.5 ? 1.0 : -1.0) * Math.round(Math.random() * 100);
+					}
+
+					function onRefresh() {
+	//console.log(config.data.datasets);
+						let localcpd = hrCouplearr;
+					  let cpd = hrCouplearr.shift();;
+						let rdate = cpd.x;
+						let jsdate =  new Date(rdate);
+						config.data.datasets.forEach(function(dataxy) {
+							let wholeb = Math.round(cpd.y);
+							let momentd = {};
+							momentd = moment(jsdate);//"12-25-1995", "MM-DD-YYYY");//new Date();//moment(cpd.x);
+	//console.log(momentd);
+							dataxy.data.push({
+								x:  new Date(),
+								y: wholeb
+							});
+	console.log(dataxy.data);
+						});
+					}
+
+					var color = Chart.helpers.color;
+					var config = {
+						type: 'bar',
+						data: {
+							labels: [],
+							datasets: [/*{
+								label: 'Dataset (line)',
+								type: 'line',
+								backgroundColor: color(chartColors.red).alpha(0.5).rgbString(),
+												borderColor: chartColors.red,
+								fill: false,
+								cubicInterpolationMode: 'monotone',
+								data: []
+							}, */{
+								label: 'Dataset (bars)',
+								backgroundColor: color(chartColors.blue).alpha(0.5).rgbString(),
+								borderColor: chartColors.blue,
+												borderWidth: 1,
+								data: []
+							}]
+						},
+						options: {
+							responsive: true,
+							title: {
+								display: true,
+								text: 'Heart Rate 24 Average'
+							},
+							scales: {
+								xAxes: [{
+									type: 'realtime',
+									display: true,
+									time: {
+										unitStepSize: 1
+									}
+								}],
+								yAxes: [{
+									type: 'linear',
+									display: true,
+									scaleLabel: {
+										display: true,
+										labelString: 'value'
+									}
+								}]
+							},
+							tooltips: {
+								intersect: false
+							},
+							hover: {
+								mode: 'nearest',
+								intersect: false
+							},
+							plugins: {
+								streaming: {
+									duration: 20000,
+									refresh: 1000,
+									delay: 2000,
+									onRefresh: onRefresh
+								}
+							}
+						}
+					};
+
+	console.log('canvas charting starting');
+				var ctx = document.getElementById('canvas2').getContext('2d');
+					window.myBar = new Chart(ctx, config);
+			})
+			.catch(function (error) {
+	console.log(error);
+	  	});
+		};
+
+		/* Data listeners - getters */
+			function getHeartData3() {
+
+				let token = tempToken;
+				let apiUrl = 'http://188.166.138.93:8882';
+				let endpoint = apiUrl + "/heart24data/" + token + '/james';
+	console.log(endpoint);
+		  //MOCK RETURNED DATA
+			var hrCouplearr = [];
+			var heartData = [];
+
+			axios.get(endpoint)
+				.then(function (response) {
+console.log('get required activity data');
+		//console.log(response.data);
+					let heartData = response.data;
+					let message = "Accelerometer Data Loaded";
+					// create an array in chart standard ie. [x, y]
+					let hrCouplearr = [];
+					heartData.forEach(function(couple) {
+		//console.log(couple);
+						var hrCouple = {};
+						hrCouple.x = couple.daystart;
+						hrCouple.y = couple.hravg;
+						hrCouplearr.push(hrCouple);
+					});
+		//console.log(hrCouplearr);
+						/* charting */
+
+						var chartColors = {
+							red: 'rgb(255, 99, 132)',
+							orange: 'rgb(255, 159, 64)',
+							yellow: 'rgb(255, 205, 86)',
+							green: 'rgb(75, 192, 192)',
+							blue: 'rgb(54, 162, 235)',
+							purple: 'rgb(153, 102, 255)',
+							grey: 'rgb(201, 203, 207)'
+						};
+
+						function newDate(ms) {
+							return moment().add(ms, 'ms');
+						}
+
+						function randomScalingFactor() {
+							return (Math.random() > 0.5 ? 1.0 : -1.0) * Math.round(Math.random() * 100);
+						}
+
+						function onRefresh() {
+		//console.log(config.data.datasets);
+							let localcpd = hrCouplearr;
+						  let cpd = hrCouplearr.shift();;
+							let rdate = cpd.x;
+							let jsdate =  new Date(rdate);
+							config.data.datasets.forEach(function(dataxy) {
+								let wholeb = Math.round(cpd.y);
+								let momentd = {};
+								momentd = moment(jsdate);//"12-25-1995", "MM-DD-YYYY");//new Date();//moment(cpd.x);
+		//console.log(momentd);
+								dataxy.data.push({
+									x:  new Date(),
+									y: wholeb
+								});
+		console.log(dataxy.data);
+							});
+						}
+
+						var color = Chart.helpers.color;
+						var config = {
+							type: 'bar',
+							data: {
+								labels: [],
+								datasets: [/*{
+									label: 'Dataset (line)',
+									type: 'line',
+									backgroundColor: color(chartColors.red).alpha(0.5).rgbString(),
+													borderColor: chartColors.red,
+									fill: false,
+									cubicInterpolationMode: 'monotone',
+									data: []
+								}, */{
+									label: 'Dataset (bars)',
+									backgroundColor: color(chartColors.blue).alpha(0.5).rgbString(),
+									borderColor: chartColors.blue,
+													borderWidth: 1,
+									data: []
+								}]
+							},
+							options: {
+								responsive: true,
+								title: {
+									display: true,
+									text: 'Accelermeter x,y,z'
+								},
+								scales: {
+									xAxes: [{
+										type: 'realtime',
+										display: true,
+										time: {
+											unitStepSize: 1
+										}
+									}],
+									yAxes: [{
+										type: 'linear',
+										display: true,
+										scaleLabel: {
+											display: true,
+											labelString: 'value'
+										}
+									}]
+								},
+								tooltips: {
+									intersect: false
+								},
+								hover: {
+									mode: 'nearest',
+									intersect: false
+								},
+								plugins: {
+									streaming: {
+										duration: 20000,
+										refresh: 1000,
+										delay: 2000,
+										onRefresh: onRefresh
+									}
+								}
+							}
+						};
+
+		console.log('canvas charting starting');
+					var ctx = document.getElementById('canvas3').getContext('2d');
+						window.myBar = new Chart(ctx, config);
+				})
+				.catch(function (error) {
+		console.log(error);
+		  	});
+			};
 
 /*  Socket listeners */
 	socketpi.on('dhtlive', function (connect) {
@@ -371,5 +686,25 @@ console.log(response);
 		$("#maidsafe-api-status").css("background-color", "green");
 
 	});
+
+	/*
+	* Heart Simulation
+	*/
+
+
+	function heartsimulation()
+	{
+    var alg = genetic_alg();
+    var alg2 = genetic_alg();
+
+    heart.amplitude = 1 + alg.A;
+    heart.volume = alg.V;
+    heart.bpm = alg.F * 60;
+    predicted.amplitude = 1 + alg2.A;
+    predicted.volume = alg2.V;
+    predicted.bpm = alg2.F * 60;
+console.log(heart);
+console.log(predicted);
+	}
 
 });

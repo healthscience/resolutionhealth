@@ -3,6 +3,9 @@
 <head>
 		<meta charset="utf-8">
 		<title>Resolution Health | home</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
 
 		<link rel="stylesheet" href="css/rhstyle.css">
 
@@ -39,6 +42,7 @@
 			<nav id="select-gaiasoul-view">
 				<ul>
 					<li><a href="" id="kid-heart-view" class="notlivecontext" data-mappingview="on" >Heart</a></li>
+					<li><a href="" id="kid-simulation-view" class="notlivecontext" data-mappingview="on" >Simulation</a></li>
 					<li><a href="" id="kid-ourworld-view" class="notlivecontext" data-mappingview="off" >Our World</a></li>
 					<li><a href="" id="kid-stream-view" class="livecontext" data-mappingview="off" >Stream</a></li>
 					<li><a href="" id="kid-mindmap-view" class="notlivecontext" data-mappingview="off" >Knowledge Map</a></li>
@@ -60,12 +64,12 @@
 	<section id="signed-in">
 		<section id="live-status" >
 			<div id="dhtkad-api">
-				<a id="connectDHT" href="">Connected to healthscience.network</a> <!--<a id="seedDHT" href="" >SEED network</a>-->
+				<a id="connectDHT" href="">Connected to healthscience.network </a> <!--<a id="seedDHT" href="" >SEED network</a>-->
 			</div>
-			<div id="ethereum-api">
-				<!--<span id=""><input id="connect-ethpk" class="form-ethpk" type="text" placeholder=""></input></span>
-				<a id="ethereum-set" href="" >Set ethereum public key</a>-->
+			<div id="governance-api">
+				<a id="governance-api" href=""> GOVERNANCE</a> <!--<a id="seedDHT" href="" >SEED network</a>-->
 			</div>
+			<div class="clear"></div>
 		</section>
 
 		<section id="connectivity">
@@ -105,9 +109,11 @@
 
 		<section id="healthscience-governance">
 				<header>GOVERNANCE</header>
+				<div>Network COOP Governance, Voting, Technical Contributions, Help and Support, Docs etc.</div>
 		</section>
 	</section>
 
+<!--science view -->
 	<section id="science-view">
 		<form id="science-form" action="#" method="post">
 			<div>Contribute a problem, law, theory or computanal model
@@ -128,21 +134,52 @@
 	<section id="sensor-data">
 		List of devices and data stores
 	</section>
+
 <!-- charting wearable data -->
 <section id="wearable-chart" >
 	wearable charting
 	<canvas id="canvas"></canvas>
+	<canvas id="canvas2"></canvas>
+	<canvas id="canvas3"></canvas>
 	</div>
 	<br>
 	<br>
-	<button id="randomizeData">Randomize Data</button>
-	<button id="addDataset">Add Dataset</button>
-	<button id="removeDataset">Remove Dataset</button>
-	<button id="addData">Add Data</button>
 
 </section>
 
+<!-- charting wearable data -->
+<section id="simulation-heart" >
+	<div id="app">
+		<div class="wrapper">
+	    <div class="heart">
+	        <h3>Volume</h3>
+	        <p>{{ (heart.volume * 1000).toFixed(2) }} millilitres</p>
+	        <h3>BPM</h3>
+	        <p>{{ heart.bpm.toFixed(2) }} beats per minute</p>
+	        <h3>Amplitude</h3>
+	        <p>{{ (( heart.amplitude -1) *100 ).toFixed(2) }} % </p>
+
+	    </div>
+	    <div class="predicted">
+	        <h3>Volume</h3>
+	        <p>{{ (predicted.volume * 1000).toFixed(2) }} millilitres</p>
+	        <h3>BPM</h3>
+	        <p>{{ predicted.bpm.toFixed(2) }} beats per minute</p>
+	        <h3>Amplitude</h3>
+	        <p>{{ (( predicted.amplitude -1) *100 ).toFixed(2) }} % </p>
+
+	    </div>
+		</div>
+		<div class="hearts">
+				<img src="images/heart.png" alt="Heart" id="heart" :style="{animationDuration: milliseconds(heart.bpm)/2 + 'ms'}">
+				<img src="images/heart.png" alt="Heart" id="predicted" :style="{animationDuration: milliseconds(predicted.bpm)/2 + 'ms'}">
+		</div>
+	</div>
+</section>
+
 	<script type="text/javascript" src="start.js"></script>
+  <script src="simulation/HeartTest.js"></script>
+	<script src="simulation/HeartTest2.js"></script>
 
 </body>
 </html>

@@ -1,0 +1,12 @@
+/node_modules/*
+/src/key/*
+/datadir/*
+/oldmessages/*
+/build/*
+/dist/*
+/src/server/node_modules/*
+/src/datadir/*
+/src/server/datadir/*
+/src/server/oldmessages/*
+/src/server/settings.js
+

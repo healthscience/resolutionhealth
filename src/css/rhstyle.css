@@ -369,6 +369,21 @@ img#quoteslogo {
 
 /**
 *
+* Governance API
+*
+*/
+#healthscience-governance {
+	display:none;
+	margin:40px;
+
+}
+
+#dhtkad-api,#governance-api {
+	float: left;
+	margin-left: 10px;
+}
+/**
+*
 * status color api
 *
 */
@@ -535,6 +550,73 @@ pre
 #ptop-view {
 	display:none;
 	margin:40px;
+}
+
+/**
+*
+* Heart Simulation
+*
+*/
+#simulation-heart {
+	display:none;
+	margin:40px;
+}
+
+#heart {
+		animation-duration: 1000ms;
+		animation-name: beat;
+		animation-direction: alternate;
+		animation-iteration-count: infinite;
+}
+
+#predicted {
+		animation-duration: 1000ms;
+		animation-name: beatPredicted;
+		animation-direction: alternate;
+		animation-iteration-count: infinite;
+}
+
+@keyframes beat {
+		from {
+				transform: scale(1);
+		}
+
+		to {
+				transform: scale(1.2);
+		}
+}
+
+@keyframes beatPredicted {
+		from {
+				transform: scale(1);
+		}
+
+		to {
+				transform: scale(1.2);
+		}
+}
+
+.hearts,
+.message-wrapper,
+.wrapper {
+		display: flex;
+		justify-content: space-around;
+		border: 1px solid blue;
+}
+
+.wrapper-column {
+		flex-direction: column;
+		border: 1px solid red;
+}
+
+.message {
+		border: 1px solid green;
+		background: #b1dda5;
+		position: fixed;
+		top: 0;
+		color: white;
+		font-weight: 700;
+		padding: 0.5rem 1rem;
 }
 
 /**
