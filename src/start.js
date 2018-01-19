@@ -244,7 +244,7 @@ console.log('private key making');
 
 		let token = tempToken;
 		let apiUrl = 'http://188.166.138.93:8882';
-		let endpoint = apiUrl + "/heart24data/" + token + '/james';
+		let endpoint = apiUrl + "/heartdata/" + token + '/james';
 console.log(endpoint);
   //MOCK RETURNED DATA
 	var hrCouplearr = [];
@@ -265,7 +265,7 @@ console.log(endpoint);
 	axios.get(endpoint)
 		.then(function (response) {
 console.log('get required heart data');
-//console.log(response.data);
+console.log(response.data);
 			let heartData = response.data;
 			let message = "Heart Data Loaded";
 			// create an array in chart standard ie. [x, y]
@@ -273,8 +273,8 @@ console.log('get required heart data');
 			heartData.forEach(function(couple) {
 //console.log(couple);
 				var hrCouple = {};
-				hrCouple.x = couple.daystart;
-				hrCouple.y = couple.hravg;
+				hrCouple.x = couple.timestamp;
+				hrCouple.y = couple.hr;
 				hrCouplearr.push(hrCouple);
 			});
 //console.log(hrCouplearr);
@@ -302,21 +302,16 @@ console.log('get required heart data');
 //console.log(config.data.datasets);
 					let localcpd = hrCouplearr;
 				  let cpd = hrCouplearr.shift();
-console.log(cpd.x);
 					let rdate = cpd.x;
 					let jsdate =  new Date(rdate);
-console.log(jsdate);
-console.log((jsdate instanceof Date))
 					config.data.datasets.forEach(function(dataxy) {
 						let wholeb = Math.round(cpd.y);
 						let momentd = {};
 						momentd = moment(jsdate);//"12-25-1995", "MM-DD-YYYY");//new Date();//moment(cpd.x);
-//console.log(momentd);
 						dataxy.data.push({
 							x:  new Date(),
 							y: wholeb
 						});
-console.log(dataxy.data);
 					});
 				}
 
@@ -397,27 +392,25 @@ console.log(error);
 			let token = tempToken;
 			let apiUrl = 'http://188.166.138.93:8882';
 			let endpoint = apiUrl + "/heart24data/" + token + '/james';
-console.log(endpoint);
 	  //MOCK RETURNED DATA
 		var hrCouplearr = [];
 		var heartData = [];
 
 		axios.get(endpoint)
 			.then(function (response) {
-	console.log('get required heart data');
+console.log('get required heart data');
 	//console.log(response.data);
 				let heartData = response.data;
 				let message = "Heart Data Loaded";
 				// create an array in chart standard ie. [x, y]
 				let hrCouplearr = [];
 				heartData.forEach(function(couple) {
-	//console.log(couple);
 					var hrCouple = {};
 					hrCouple.x = couple.daystart;
 					hrCouple.y = couple.hravg;
 					hrCouplearr.push(hrCouple);
 				});
-	//console.log(hrCouplearr);
+
 					/* charting */
 
 					var chartColors = {
@@ -439,7 +432,6 @@ console.log(endpoint);
 					}
 
 					function onRefresh() {
-	//console.log(config.data.datasets);
 						let localcpd = hrCouplearr;
 					  let cpd = hrCouplearr.shift();;
 						let rdate = cpd.x;
@@ -448,7 +440,6 @@ console.log(endpoint);
 							let wholeb = Math.round(cpd.y);
 							let momentd = {};
 							momentd = moment(jsdate);//"12-25-1995", "MM-DD-YYYY");//new Date();//moment(cpd.x);
-	//console.log(momentd);
 							dataxy.data.push({
 								x:  new Date(),
 								y: wholeb
@@ -518,13 +509,11 @@ console.log(endpoint);
 							}
 						}
 					};
-
-	console.log('canvas charting starting');
 				var ctx = document.getElementById('canvas2').getContext('2d');
 					window.myBar = new Chart(ctx, config);
 			})
 			.catch(function (error) {
-	console.log(error);
+console.log(error);
 	  	});
 		};
 
@@ -533,7 +522,7 @@ console.log(endpoint);
 
 				let token = tempToken;
 				let apiUrl = 'http://188.166.138.93:8882';
-				let endpoint = apiUrl + "/heart24data/" + token + '/james';
+				let endpoint = apiUrl + "/rawamiigoacc/" + token + '/james';
 	console.log(endpoint);
 		  //MOCK RETURNED DATA
 			var hrCouplearr = [];
@@ -548,13 +537,11 @@ console.log('get required activity data');
 					// create an array in chart standard ie. [x, y]
 					let hrCouplearr = [];
 					heartData.forEach(function(couple) {
-		//console.log(couple);
 						var hrCouple = {};
 						hrCouple.x = couple.daystart;
 						hrCouple.y = couple.hravg;
 						hrCouplearr.push(hrCouple);
 					});
-		//console.log(hrCouplearr);
 						/* charting */
 
 						var chartColors = {
@@ -576,7 +563,7 @@ console.log('get required activity data');
 						}
 
 						function onRefresh() {
-		//console.log(config.data.datasets);
+
 							let localcpd = hrCouplearr;
 						  let cpd = hrCouplearr.shift();;
 							let rdate = cpd.x;
@@ -585,12 +572,11 @@ console.log('get required activity data');
 								let wholeb = Math.round(cpd.y);
 								let momentd = {};
 								momentd = moment(jsdate);//"12-25-1995", "MM-DD-YYYY");//new Date();//moment(cpd.x);
-		//console.log(momentd);
+
 								dataxy.data.push({
 									x:  new Date(),
 									y: wholeb
 								});
-		console.log(dataxy.data);
 							});
 						}
 
@@ -656,12 +642,11 @@ console.log('get required activity data');
 							}
 						};
 
-		console.log('canvas charting starting');
 					var ctx = document.getElementById('canvas3').getContext('2d');
 						window.myBar = new Chart(ctx, config);
 				})
 				.catch(function (error) {
-		console.log(error);
+	console.log(error);
 		  	});
 			};
 
@@ -690,8 +675,6 @@ console.log('get required activity data');
 	/*
 	* Heart Simulation
 	*/
-
-
 	function heartsimulation()
 	{
     var alg = genetic_alg();
