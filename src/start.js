@@ -265,7 +265,7 @@ console.log(endpoint);
 	axios.get(endpoint)
 		.then(function (response) {
 console.log('get required heart data');
-console.log(response.data);
+//console.log(response.data);
 			let heartData = response.data;
 			let message = "Heart Data Loaded";
 			// create an array in chart standard ie. [x, y]
@@ -444,7 +444,6 @@ console.log('get required heart data');
 								x:  new Date(),
 								y: wholeb
 							});
-	console.log(dataxy.data);
 						});
 					}
 
@@ -525,22 +524,23 @@ console.log(error);
 				let endpoint = apiUrl + "/rawamiigoacc/" + token + '/james';
 	console.log(endpoint);
 		  //MOCK RETURNED DATA
-			var hrCouplearr = [];
-			var heartData = [];
+			var accCouplearr = [];
+			var accData = [];
 
 			axios.get(endpoint)
 				.then(function (response) {
 console.log('get required activity data');
-		//console.log(response.data);
-					let heartData = response.data;
+console.log(response.data);
+					let accData = response.data;
 					let message = "Accelerometer Data Loaded";
 					// create an array in chart standard ie. [x, y]
 					let hrCouplearr = [];
-					heartData.forEach(function(couple) {
-						var hrCouple = {};
-						hrCouple.x = couple.daystart;
-						hrCouple.y = couple.hravg;
-						hrCouplearr.push(hrCouple);
+					accData.forEach(function(couple) {
+						var accCouple = {};
+						accCouple.x = couple.basetime;
+						var multiacc = couple.xyzarray[0] * couple.xyzarray[1] * couple.xyzarray[2];
+						accCouple.y = multiacc;
+						accCouplearr.push(accCouple);
 					});
 						/* charting */
 
@@ -565,11 +565,11 @@ console.log('get required activity data');
 						function onRefresh() {
 
 							let localcpd = hrCouplearr;
-						  let cpd = hrCouplearr.shift();;
+						  let cpd = accCouplearr.shift();;
 							let rdate = cpd.x;
 							let jsdate =  new Date(rdate);
 							config.data.datasets.forEach(function(dataxy) {
-								let wholeb = Math.round(cpd.y);
+								let wholeb = cpd.y;
 								let momentd = {};
 								momentd = moment(jsdate);//"12-25-1995", "MM-DD-YYYY");//new Date();//moment(cpd.x);
 
