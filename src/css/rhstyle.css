@@ -382,6 +382,18 @@ img#quoteslogo {
 	float: left;
 	margin-left: 10px;
 }
+
+.hs-gov {
+
+	margin: 20px;
+
+}
+
+.hs-gov header {
+
+	font-weight: bold;
+
+}
 /**
 *
 * status color api
