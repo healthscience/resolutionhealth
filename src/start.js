@@ -679,15 +679,14 @@ console.log(response.data);
 	{
     var alg = genetic_alg();
     var alg2 = genetic_alg();
-
-    heart.amplitude = 1 + alg.A;
-    heart.volume = alg.V;
-    heart.bpm = alg.F * 60;
-    predicted.amplitude = 1 + alg2.A;
-    predicted.volume = alg2.V;
-    predicted.bpm = alg2.F * 60;
-console.log(heart);
-console.log(predicted);
+console.log(alg);
+console.log(alg2);
+	    $("#heartamplitude").html(1 + alg.A);
+	    $("#heartvolume").html(alg.V);
+	    $("#heartbpm").html(alg.F * 60);
+	    $("#predictedamplitude").html(1 + alg2.A);
+	    $("#predictheartvolume").html(alg2.V);
+	    $("#predictedbpm").html(alg2.F * 60);
 	}
 
 });

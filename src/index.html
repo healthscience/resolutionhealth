@@ -169,34 +169,33 @@
 
 </section>
 
-<!-- charting wearable data -->
+<!-- Simulation of human heart -->
 <section id="simulation-heart" >
 	<div id="app">
 		<div class="wrapper">
 	    <div class="heart">
 	        <h3>Volume</h3>
-	        <p>{{ (heart.volume * 1000).toFixed(2) }} millilitres</p>
+	        <p><div id="heartvolume"></div> millilitres</p>
 	        <h3>BPM</h3>
-	        <p>{{ heart.bpm.toFixed(2) }} beats per minute</p>
+	        <p><div id="heartbpm"></div> beats per minute</p>
 	        <h3>Amplitude</h3>
-	        <p>{{ (( heart.amplitude -1) *100 ).toFixed(2) }} % </p>
-
+	        <p><div id="heartamplitude" ></div> % </p>
 	    </div>
 	    <div class="predicted">
 	        <h3>Volume</h3>
-	        <p>{{ (predicted.volume * 1000).toFixed(2) }} millilitres</p>
+	        <p><div id="predictheartvolume"></div> millilitres</p>
 	        <h3>BPM</h3>
-	        <p>{{ predicted.bpm.toFixed(2) }} beats per minute</p>
+	        <p><div id="predictedbpm"></div> beats per minute</p>
 	        <h3>Amplitude</h3>
-	        <p>{{ (( predicted.amplitude -1) *100 ).toFixed(2) }} % </p>
-
+	        <p><div id="predictedamplitude"></div> % </p>
 	    </div>
-		</div>
+
 		<div class="hearts">
-				<img src="images/heart.png" alt="Heart" id="heart" :style="{animationDuration: milliseconds(heart.bpm)/2 + 'ms'}">
-				<img src="images/heart.png" alt="Heart" id="predicted" :style="{animationDuration: milliseconds(predicted.bpm)/2 + 'ms'}">
+				<img src="images/heart.png" alt="Heart" id="heart" :style="{animationDuration: milliseconds(alg.F * 60)/2 + 'ms'}">
+				<img src="images/heart.png" alt="Heart" id="predicted" :style="{animationDuration: milliseconds(alg2.F * 60)/2 + 'ms'}">
 		</div>
 	</div>
+ </div>
 </section>
 
 	<script type="text/javascript" src="start.js"></script>
