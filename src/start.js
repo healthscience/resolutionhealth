@@ -20,6 +20,7 @@ $(document).ready(function(){
 	// if present, login  (prompt for password if steup)
 	// display live heart data UI
 
+
 function isElectron() {
   //return process && process.versions && (process.versions.electron !== undefined);
 	if (typeof require !== 'function') return false;
@@ -215,6 +216,7 @@ console.log(accountlive);
 			$("#connectivity").hide();
 			$("#science-view").hide();
 			heartsimulation();
+
 			break;
 
 		}
@@ -677,6 +679,7 @@ console.log(response.data);
 	*/
 	function heartsimulation()
 	{
+
     var alg = genetic_alg();
     var alg2 = genetic_alg();
 console.log(alg);
@@ -688,5 +691,7 @@ console.log(alg2);
 	    $("#predictheartvolume").html(alg2.V);
 	    $("#predictedbpm").html(alg2.F * 60);
 	}
+
+
 
 });
