@@ -20,7 +20,6 @@ $(document).ready(function(){
 	// if present, login  (prompt for password if steup)
 	// display live heart data UI
 
-
 function isElectron() {
   //return process && process.versions && (process.versions.electron !== undefined);
 	if (typeof require !== 'function') return false;
@@ -203,7 +202,7 @@ console.log(accountlive);
 			$("#simulation-heart").hide();
 			getHeartData();
 			getHeartData2();
-			getHeartData3();
+			//getHeartData3();
 			break;
 
 			case "kid-simulation-view":
@@ -241,147 +240,121 @@ console.log('private key making');
 
 	});
 
+	// chart button clicks
+	$("#wearable-chart").click(function(e) {
+		e.preventDefault(e);
+console.log('button chart clicked');
+		var targetclick = e.target;
+console.log(targetclick);
+	  // need to call SAFEflow and update chart
+		let token = tempToken;
+		let pubkey = "22FQ8dJEApww33p31935";
+		let apiUrl = 'http://165.227.244.213:8881/';
+		let endpoint = apiUrl + "heartdata/" + pubkey + "/" + token;
+		axios.get(endpoint)
+			.then(function (response) {
+console.log('get required updated heart data');
+// prepare the incoming data for display
+//console.log(response.data);
+				let heartDataIN = response.data;
+//console.log(heartData);
+				let message = "Heart Data Loaded";
+			 	//create an array in chart standard ie. [x, y]
+				let hrCouplearr = [];
+				heartDataIN.forEach(function(couple) {
+
+					//var newlabel = 992232323232;
+					//var newhrData = 99;
+					barChartData.labels.push(couple.timestamp);
+					barChartData.datasets[0].data.push(couple.heartrate);
+					window.myBar.update();
+
+					//dataLabel.push(couple.timestamp);
+					//heartData.push( moment(couple.heartrate));
+				});
+
+
+		}).catch(function (error) {
+console.log(error);
+		});
+	});
+
 /* Data listeners - getters */
 	function getHeartData() {
+		var chartbuttons = '';
+		chartbuttons += '<button id="addDataset">Add heart average</button>';
+		chartbuttons += '<button id="removeDataset">Remove heart average</button>';
+    chartbuttons += '<button id="addData">Add new BMP data</button>';
+		$("#chart-controls").html(chartbuttons);
+
+		var heartData = [];
+		var dataLabel = [];
+
+		var chartColors = {
+			red: 'rgb(255, 99, 132)',
+			orange: 'rgb(255, 159, 64)',
+			yellow: 'rgb(255, 205, 86)',
+			green: 'rgb(75, 192, 192)',
+			blue: 'rgb(54, 162, 235)',
+			purple: 'rgb(153, 102, 255)',
+			grey: 'rgb(201, 203, 207)'
+		};
 
 		let token = tempToken;
-		let apiUrl = 'http://188.166.138.93:8882';
-		let endpoint = apiUrl + "/heartdata/" + token + '/james';
-console.log(endpoint);
-  //MOCK RETURNED DATA
-	var hrCouplearr = [];
-	var heartData = [];
-	//heartDatao = {};
-	//heartDatao.daystart = new Date();
-	//heartDatao.hravg = 64;
-	//heartData.push(heartDatao);
-	//heartData.forEach(function(couple) {
-	//	var hrCouple = {};
-	//	hrCouple.x = couple.daystart;
-	//	hrCouple.y = couple.hravg;
-	//	hrCouplearr.push(hrCouple);
-//console.log(hrCouplearr);
-//	});
+		let pubkey = "22FQ8dJEApww33p31935";
+		let apiUrl = 'http://165.227.244.213:8881/';
+		let endpoint = apiUrl + "heartdata/" + pubkey + "/" + token;
+		axios.get(endpoint)
+			.then(function (response) {
+console.log('get required heart data');
+// prepare the incoming data for display
+//console.log(response.data);
+				let heartDataIN = response.data;
+//console.log(heartData);
+				let message = "Heart Data Loaded";
+			 	//create an array in chart standard ie. [x, y]
+				let hrCouplearr = [];
+				heartDataIN.forEach(function(couple) {
+					dataLabel.push(couple.timestamp);
+					heartData.push( moment(couple.heartrate));
+				});
+//console.log(dataLabel);
 //console.log(heartData);
 
-	axios.get(endpoint)
-		.then(function (response) {
-console.log('get required heart data');
-//console.log(response.data);
-			let heartData = response.data;
-			let message = "Heart Data Loaded";
-			// create an array in chart standard ie. [x, y]
-			let hrCouplearr = [];
-			heartData.forEach(function(couple) {
-//console.log(couple);
-				var hrCouple = {};
-				hrCouple.x = couple.timestamp;
-				hrCouple.y = couple.hr;
-				hrCouplearr.push(hrCouple);
-			});
-//console.log(hrCouplearr);
-				/* charting */
+	var color = Chart.helpers.color;
+	    barChartData = {
+			labels: dataLabel,
+			datasets: [{
+				label: 'Dataset 1',
+				backgroundColor: color(chartColors.red).alpha(0.5).rgbString(),
+				borderColor: chartColors.red,
+				borderWidth: 1,
+				data: heartData
+			}, {
+				label: 'Dataset 2',
+				backgroundColor: color(chartColors.blue).alpha(0.5).rgbString(),
+				borderColor: chartColors.blue,
+				borderWidth: 1,
+				data: [34,11]
+		}]
 
-				var chartColors = {
-					red: 'rgb(255, 99, 132)',
-					orange: 'rgb(255, 159, 64)',
-					yellow: 'rgb(255, 205, 86)',
-					green: 'rgb(75, 192, 192)',
-					blue: 'rgb(54, 162, 235)',
-					purple: 'rgb(153, 102, 255)',
-					grey: 'rgb(201, 203, 207)'
-				};
-
-				function newDate(ms) {
-					return moment().add(ms, 'ms');
-				}
-
-				function randomScalingFactor() {
-					return (Math.random() > 0.5 ? 1.0 : -1.0) * Math.round(Math.random() * 100);
-				}
-
-				function onRefresh() {
-//console.log(config.data.datasets);
-					let localcpd = hrCouplearr;
-				  let cpd = hrCouplearr.shift();
-					let rdate = cpd.x;
-					let jsdate =  new Date(rdate);
-					config.data.datasets.forEach(function(dataxy) {
-						let wholeb = Math.round(cpd.y);
-						let momentd = {};
-						momentd = moment(jsdate);//"12-25-1995", "MM-DD-YYYY");//new Date();//moment(cpd.x);
-						dataxy.data.push({
-							x:  new Date(),
-							y: wholeb
-						});
-					});
-				}
-
-				var color = Chart.helpers.color;
-				var config = {
-					type: 'bar',
-					data: {
-						labels: [],
-						datasets: [/*{
-							label: 'Dataset (line)',
-							type: 'line',
-							backgroundColor: color(chartColors.red).alpha(0.5).rgbString(),
-											borderColor: chartColors.red,
-							fill: false,
-							cubicInterpolationMode: 'monotone',
-							data: []
-						}, */{
-							label: 'Dataset (bars)',
-							backgroundColor: color(chartColors.blue).alpha(0.5).rgbString(),
-							borderColor: chartColors.blue,
-											borderWidth: 1,
-							data: []
-						}]
-					},
-					options: {
-						responsive: true,
-						title: {
-							display: true,
-							text: 'Heart Rate Beats per minute'
-						},
-						scales: {
-							xAxes: [{
-								type: 'realtime',
-								display: true,
-								time: {
-									unitStepSize: 1
-								}
-							}],
-							yAxes: [{
-								type: 'linear',
-								display: true,
-								scaleLabel: {
-									display: true,
-									labelString: 'value'
-								}
-							}]
-						},
-						tooltips: {
-							intersect: false
-						},
-						hover: {
-							mode: 'nearest',
-							intersect: false
-						},
-						plugins: {
-							streaming: {
-								duration: 20000,
-								refresh: 1000,
-								delay: 2000,
-								onRefresh: onRefresh
-							}
-						}
-					}
-				};
-
+	};
 console.log('canvas charting starting');
 			var ctx = document.getElementById('canvas').getContext('2d');
-				window.myBar = new Chart(ctx, config);
+			window.myBar = new Chart(ctx, {
+				type: 'bar',
+				data: barChartData,
+				options: {
+					responsive: true,
+					legend: {
+						position: 'top',
+					},
+					title: {
+						display: true,
+						text: 'Beats Per Minute'
+					}
+				}
+			});
 		})
 		.catch(function (error) {
 console.log(error);
@@ -391,265 +364,12 @@ console.log(error);
 	/* Data listeners - getters */
 		function getHeartData2() {
 
-			let token = tempToken;
-			let apiUrl = 'http://188.166.138.93:8882';
-			let endpoint = apiUrl + "/heart24data/" + token + '/james';
-	  //MOCK RETURNED DATA
-		var hrCouplearr = [];
-		var heartData = [];
 
-		axios.get(endpoint)
-			.then(function (response) {
-console.log('get required heart data');
-	//console.log(response.data);
-				let heartData = response.data;
-				let message = "Heart Data Loaded";
-				// create an array in chart standard ie. [x, y]
-				let hrCouplearr = [];
-				heartData.forEach(function(couple) {
-					var hrCouple = {};
-					hrCouple.x = couple.daystart;
-					hrCouple.y = couple.hravg;
-					hrCouplearr.push(hrCouple);
-				});
-
-					/* charting */
-
-					var chartColors = {
-						red: 'rgb(255, 99, 132)',
-						orange: 'rgb(255, 159, 64)',
-						yellow: 'rgb(255, 205, 86)',
-						green: 'rgb(75, 192, 192)',
-						blue: 'rgb(54, 162, 235)',
-						purple: 'rgb(153, 102, 255)',
-						grey: 'rgb(201, 203, 207)'
-					};
-
-					function newDate(ms) {
-						return moment().add(ms, 'ms');
-					}
-
-					function randomScalingFactor() {
-						return (Math.random() > 0.5 ? 1.0 : -1.0) * Math.round(Math.random() * 100);
-					}
-
-					function onRefresh() {
-						let localcpd = hrCouplearr;
-					  let cpd = hrCouplearr.shift();;
-						let rdate = cpd.x;
-						let jsdate =  new Date(rdate);
-						config.data.datasets.forEach(function(dataxy) {
-							let wholeb = Math.round(cpd.y);
-							let momentd = {};
-							momentd = moment(jsdate);//"12-25-1995", "MM-DD-YYYY");//new Date();//moment(cpd.x);
-							dataxy.data.push({
-								x:  new Date(),
-								y: wholeb
-							});
-						});
-					}
-
-					var color = Chart.helpers.color;
-					var config = {
-						type: 'bar',
-						data: {
-							labels: [],
-							datasets: [/*{
-								label: 'Dataset (line)',
-								type: 'line',
-								backgroundColor: color(chartColors.red).alpha(0.5).rgbString(),
-												borderColor: chartColors.red,
-								fill: false,
-								cubicInterpolationMode: 'monotone',
-								data: []
-							}, */{
-								label: 'Dataset (bars)',
-								backgroundColor: color(chartColors.blue).alpha(0.5).rgbString(),
-								borderColor: chartColors.blue,
-												borderWidth: 1,
-								data: []
-							}]
-						},
-						options: {
-							responsive: true,
-							title: {
-								display: true,
-								text: 'Heart Rate 24 Average'
-							},
-							scales: {
-								xAxes: [{
-									type: 'realtime',
-									display: true,
-									time: {
-										unitStepSize: 1
-									}
-								}],
-								yAxes: [{
-									type: 'linear',
-									display: true,
-									scaleLabel: {
-										display: true,
-										labelString: 'value'
-									}
-								}]
-							},
-							tooltips: {
-								intersect: false
-							},
-							hover: {
-								mode: 'nearest',
-								intersect: false
-							},
-							plugins: {
-								streaming: {
-									duration: 20000,
-									refresh: 1000,
-									delay: 2000,
-									onRefresh: onRefresh
-								}
-							}
-						}
-					};
-				var ctx = document.getElementById('canvas2').getContext('2d');
-					window.myBar = new Chart(ctx, config);
-			})
-			.catch(function (error) {
-console.log(error);
-	  	});
 		};
 
 		/* Data listeners - getters */
 			function getHeartData3() {
 
-				let token = tempToken;
-				let apiUrl = 'http://188.166.138.93:8882';
-				let endpoint = apiUrl + "/rawamiigoacc/" + token + '/james';
-	console.log(endpoint);
-		  //MOCK RETURNED DATA
-			var accCouplearr = [];
-			var accData = [];
-
-			axios.get(endpoint)
-				.then(function (response) {
-console.log('get required activity data');
-console.log(response.data);
-					let accData = response.data;
-					let message = "Accelerometer Data Loaded";
-					// create an array in chart standard ie. [x, y]
-					let hrCouplearr = [];
-					accData.forEach(function(couple) {
-						var accCouple = {};
-						accCouple.x = couple.basetime;
-						var multiacc = couple.xyzarray[0] * couple.xyzarray[1] * couple.xyzarray[2];
-						accCouple.y = multiacc;
-						accCouplearr.push(accCouple);
-					});
-						/* charting */
-
-						var chartColors = {
-							red: 'rgb(255, 99, 132)',
-							orange: 'rgb(255, 159, 64)',
-							yellow: 'rgb(255, 205, 86)',
-							green: 'rgb(75, 192, 192)',
-							blue: 'rgb(54, 162, 235)',
-							purple: 'rgb(153, 102, 255)',
-							grey: 'rgb(201, 203, 207)'
-						};
-
-						function newDate(ms) {
-							return moment().add(ms, 'ms');
-						}
-
-						function randomScalingFactor() {
-							return (Math.random() > 0.5 ? 1.0 : -1.0) * Math.round(Math.random() * 100);
-						}
-
-						function onRefresh() {
-
-							let localcpd = hrCouplearr;
-						  let cpd = accCouplearr.shift();;
-							let rdate = cpd.x;
-							let jsdate =  new Date(rdate);
-							config.data.datasets.forEach(function(dataxy) {
-								let wholeb = cpd.y;
-								let momentd = {};
-								momentd = moment(jsdate);//"12-25-1995", "MM-DD-YYYY");//new Date();//moment(cpd.x);
-
-								dataxy.data.push({
-									x:  new Date(),
-									y: wholeb
-								});
-							});
-						}
-
-						var color = Chart.helpers.color;
-						var config = {
-							type: 'bar',
-							data: {
-								labels: [],
-								datasets: [/*{
-									label: 'Dataset (line)',
-									type: 'line',
-									backgroundColor: color(chartColors.red).alpha(0.5).rgbString(),
-													borderColor: chartColors.red,
-									fill: false,
-									cubicInterpolationMode: 'monotone',
-									data: []
-								}, */{
-									label: 'Dataset (bars)',
-									backgroundColor: color(chartColors.blue).alpha(0.5).rgbString(),
-									borderColor: chartColors.blue,
-													borderWidth: 1,
-									data: []
-								}]
-							},
-							options: {
-								responsive: true,
-								title: {
-									display: true,
-									text: 'Accelermeter x,y,z'
-								},
-								scales: {
-									xAxes: [{
-										type: 'realtime',
-										display: true,
-										time: {
-											unitStepSize: 1
-										}
-									}],
-									yAxes: [{
-										type: 'linear',
-										display: true,
-										scaleLabel: {
-											display: true,
-											labelString: 'value'
-										}
-									}]
-								},
-								tooltips: {
-									intersect: false
-								},
-								hover: {
-									mode: 'nearest',
-									intersect: false
-								},
-								plugins: {
-									streaming: {
-										duration: 20000,
-										refresh: 1000,
-										delay: 2000,
-										onRefresh: onRefresh
-									}
-								}
-							}
-						};
-
-					var ctx = document.getElementById('canvas3').getContext('2d');
-						window.myBar = new Chart(ctx, config);
-				})
-				.catch(function (error) {
-	console.log(error);
-		  	});
 			};
 
 /*  Socket listeners */
